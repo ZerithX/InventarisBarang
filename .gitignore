@@ -1,10 +1,11 @@
 ### IntelliJ IDEA ###
+.idea/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 .kotlin
-.idea
-InventarisBarang.iml
+*.iml
+
 
 ### Eclipse ###
 .apt_generated
