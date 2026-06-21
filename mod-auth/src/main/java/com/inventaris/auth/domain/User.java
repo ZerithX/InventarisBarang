@@ -9,7 +9,7 @@ class User {
     private String password;
     private Role role;
 
-    public User(String name, ) {
+    public User(String name, String password, Role role) {
         this.id = UUID.randomUUID().toString;
         this.name = name;
         this.password = password;
