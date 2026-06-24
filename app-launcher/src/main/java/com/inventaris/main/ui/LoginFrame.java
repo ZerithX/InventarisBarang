@@ -1,6 +1,11 @@
 package com.inventaris.main.ui;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.inventaris.auth.domain.Role;
+import com.inventaris.auth.domain.User;
+import com.inventaris.auth.repository.UserRepository;
+import com.inventaris.auth.service.AuthService;
+import com.inventaris.core.exception.AuthException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,12 +20,16 @@ public class LoginFrame extends JFrame {
     private JLabel lblJudul;
     private JButton btnLogin;
 
+    private final AuthService authService;
+
     public LoginFrame() {
+        this.authService = new AuthService(new UserRepository());
         setContentPane(panelUtama);
         setTitle("Sistem Inventaris - Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         applyFlatLafStyling();
+        initListeners();
 
         setSize(390, 700);
         setLocationRelativeTo(null);
@@ -70,6 +79,43 @@ public class LoginFrame extends JFrame {
                         "margin: 10,20,10,20;" +
                         "borderWidth: 0;" +
                         "focusWidth: 0;"); // Menghilangkan garis border luar bawaan Jbutton
+    }
+
+    private void initListeners() {
+        btnLogin.addActionListener(e -> handleLogin());
+
+        txtUsername.addActionListener(e -> handleLogin());
+        txtPassword.addActionListener(e -> handleLogin());
+    }
+
+    private void handleLogin() {
+        String username = txtUsername.getText();
+        String password = new String(txtPassword.getPassword());
+
+        try {
+            User user = authService.login(username, password);
+            JOptionPane.showMessageDialog(this,
+                    "Login Berhasil!\nSelamat datang, " + user.getName() + " (" + user.getRole() + ")",
+                    "Sukses",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            // TODO: Arahkan ke Frame Dashboard yang sesuai setelah dibuat
+            if (user.getRole() == Role.ADMIN) {
+                JOptionPane.showMessageDialog(this, "Membuka Dashboard Admin (Belum Diimplementasikan)", "Info", JOptionPane.INFORMATION_MESSAGE);
+                // new AdminDashboardFrame(user).setVisible(true);
+            } else if (user.getRole() == Role.STAFF) {
+                JOptionPane.showMessageDialog(this, "Membuka Dashboard Staff (Belum Diimplementasikan)", "Info", JOptionPane.INFORMATION_MESSAGE);
+                // new StaffDashboardFrame(user).setVisible(true);
+            }
+
+            this.dispose();
+
+        } catch (AuthException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Login Gagal", JOptionPane.WARNING_MESSAGE);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan sistem: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public static void main(String[] args) {
