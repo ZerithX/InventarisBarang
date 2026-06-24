@@ -47,17 +47,25 @@ Sebelum Anda mulai menulis kode baru, selalu ambil pembaruan terbaru dari GitHub
 git pull origin main
 ```
 
-### 2. Lakukan Perubahan Kode
+### 2. Buat Branch Baru
+Buatlah branch baru yang spesifik sesuai dengan fitur atau perbaikan yang akan Anda kerjakan:
+
+```bash
+// Format branch baru : fitur/nama-fitur atau bugfix/nama-bug
+git checkout -b feat/authlogin
+```
+
+### 3. Lakukan Perubahan Kode
 Silakan edit atau tambahkan file baru sesuai dengan domain modulnya (contoh: `mod-inventory` untuk fitur barang/kategori, `mod-transaction` untuk transaksi).
 
-### 3. Periksa Status File yang Diubah
+### 4. Periksa Status File yang Diubah
 Lihat daftar file apa saja yang telah Anda ubah atau tambahkan dengan perintah:
 
 ```bash
 git status
 ```
 
-### 4. Simpan Perubahan (Add & Commit)
+### 5. Simpan Perubahan (Add & Commit)
 Tambahkan file yang diubah ke area staging, lalu buat pesan commit yang deskriptif:
 
 ```bash
@@ -67,11 +75,11 @@ git add .
 # Atau jika hanya ingin menambahkan file spesifik
 git add mod-inventory/src/main/java/...
 
-# Buat commit dengan pesan yang jelas
+# Buat commit dengan pesan yang jelas (Bisa melihat reference di conventional commit)
 git commit -m "Menambahkan [Nama Fitur/Perubahan] ke sistem inventaris"
 ```
 
-### 5. Kirim Perubahan ke GitHub (Push)
+### 6. Kirim Perubahan ke GitHub (Push)
 Kirimkan commit lokal Anda ke repositori utama di GitHub:
 
 ```bash
