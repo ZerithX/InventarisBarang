@@ -1,21 +1,21 @@
 package com.inventaris.auth.domain;
 
-import com.inventaris.coreshared.AuthException;
-import.java.util.UUID;
+//import com.inventaris.coreshared.AuthException;
 
-class User {
+import java.util.UUID;
+
+public class User {
     private String id;
     private String name;
     private String password;
     private Role role;
 
     public User(String name, String password, Role role) {
-        this.id = UUID.randomUUID().toString;
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.password = password;
         this.role = role;
     }
-
 
     public void setId(String id) {
         this.id = id;
@@ -26,9 +26,9 @@ class User {
     }
 
     public void setName(String name) {
-        if (name == NULL || name.trim().isEmpty()) {
-            throw new IlegalArgumentException("Nama tidak boleh kosong");
-        }
+//        if (name == null || name.trim().isEmpty()) {
+//            throw new IlegalArgumentException("Nama tidak boleh kosong");
+//        }
         this.name = name;
     }
 
@@ -37,9 +37,9 @@ class User {
     }
 
     public void setPassword(String password) {
-        if  (password == NULL || password.trim().isEmpty()) {
-            throw new IlegalArgumentException("Password tidak boleh kosong")
-        }
+//        if  (password == null || password.trim().isEmpty()) {
+//            throw new IlegalArgumentException("Password tidak boleh kosong")
+//        }
         this.password = password;
     }
 
@@ -47,9 +47,9 @@ class User {
         return password;
     }
 
-    public void setRole(Role role) {
-        return role;
-    }
+//    public void setRole(Role role) {
+//        return role;
+//    }
 
     public Role getRole() {
         return role;

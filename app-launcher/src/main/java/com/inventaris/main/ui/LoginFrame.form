@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.inventaris.main.ui.LoginFrame">
+  <grid id="27dc6" binding="panelUtama" layout-manager="GridBagLayout">
+    <constraints>
+      <xy x="84" y="40" width="374" height="575"/>
+    </constraints>
+    <properties>
+      <background color="-10120449"/>
+      <maximumSize width="2147483647" height="884"/>
+      <preferredSize width="390" height="884"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="cee79" class="javax.swing.JLabel" binding="lblLogo">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <horizontalAlignment value="0"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="485a" class="javax.swing.JLabel" binding="lblSubtitile">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <font size="14"/>
+          <preferredSize width="244" height="40"/>
+          <text value="&lt;html&gt;&lt;center&gt;Masuk untuk mengelola inventaris dan memantau stok barang.&lt;/center&gt;&lt;/html&gt;"/>
+        </properties>
+      </component>
+      <component id="7aa97" class="javax.swing.JTextField" binding="txtUsername">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag top="35" left="0" bottom="10" right="0" weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <horizontalAlignment value="2"/>
+          <margin top="2" left="6" bottom="2" right="6"/>
+          <preferredSize width="100" height="30"/>
+          <text value=""/>
+          <toolTipText value=""/>
+        </properties>
+      </component>
+      <component id="65da1" class="javax.swing.JPasswordField" binding="txtPassword">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag top="0" left="0" bottom="30" right="0" weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <horizontalAlignment value="2"/>
+          <margin top="2" left="5" bottom="2" right="5"/>
+          <opaque value="true"/>
+          <preferredSize width="100" height="30"/>
+        </properties>
+      </component>
+      <component id="9da20" class="javax.swing.JLabel" binding="lblJudul">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag top="10" left="10" bottom="15" right="10" weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <font size="32"/>
+          <horizontalAlignment value="0"/>
+          <text value="&lt;html&gt;&lt;center&gt;Sistem Inventaris&lt;Br&gt;Barang&lt;/center&gt;&lt;/html&gt;"/>
+        </properties>
+      </component>
+      <component id="74306" class="javax.swing.JButton" binding="btnLogin">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value="Login"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
