@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.inventaris.main.ui.LoginFrame">
   <grid id="27dc6" binding="panelUtama" layout-manager="GridBagLayout">
     <constraints>
-      <xy x="84" y="40" width="374" height="575"/>
+      <xy x="84" y="40" width="1555" height="575"/>
     </constraints>
     <properties>
       <background color="-10120449"/>
@@ -41,7 +41,7 @@
         </constraints>
         <properties>
           <horizontalAlignment value="2"/>
-          <margin top="2" left="6" bottom="2" right="6"/>
+          <margin top="2" left="9" bottom="2" right="6"/>
           <preferredSize width="100" height="30"/>
           <text value=""/>
           <toolTipText value=""/>
@@ -67,9 +67,9 @@
           <gridbag top="10" left="10" bottom="15" right="10" weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
-          <font size="32"/>
+          <font name="Newsreader 36pt" size="32"/>
           <horizontalAlignment value="0"/>
-          <text value="&lt;html&gt;&lt;center&gt;Sistem Inventaris&lt;Br&gt;Barang&lt;/center&gt;&lt;/html&gt;"/>
+          <text value="&lt;html&gt;&lt;center&gt;&lt;font face='Newsreader'&gt;Sistem Inventaris&lt;br&gt;Barang&lt;/font&gt;&lt;/center&gt;&lt;/html&gt;"/>
         </properties>
       </component>
       <component id="74306" class="javax.swing.JButton" binding="btnLogin">

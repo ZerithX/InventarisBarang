@@ -101,11 +101,9 @@ public class LoginFrame extends JFrame {
 
             // TODO: Arahkan ke Frame Dashboard yang sesuai setelah dibuat
             if (user.getRole() == Role.ADMIN) {
-                JOptionPane.showMessageDialog(this, "Membuka Dashboard Admin (Belum Diimplementasikan)", "Info", JOptionPane.INFORMATION_MESSAGE);
-                // new AdminDashboardFrame(user).setVisible(true);
+                new DashboardAdmin().setVisible(true);
             } else if (user.getRole() == Role.STAFF) {
-                JOptionPane.showMessageDialog(this, "Membuka Dashboard Staff (Belum Diimplementasikan)", "Info", JOptionPane.INFORMATION_MESSAGE);
-                // new StaffDashboardFrame(user).setVisible(true);
+                new DashboardStaff().setVisible(true);
             }
 
             this.dispose();
