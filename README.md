@@ -56,7 +56,7 @@ git checkout -b feat/authlogin
 ```
 
 ### 3. Lakukan Perubahan Kode
-Silakan edit atau tambahkan file baru sesuai dengan domain modulnya (contoh: `mod-inventory` untuk fitur barang/kategori, `mod-transaction` untuk transaksi).
+Silakan edit atau tambahkan file baru sesuai dengan domain modulnya (contoh: `mod-auth` untuk fitur login dan autentikasi, `core-shared` untuk throw dan exception auth).
 
 ### 4. Periksa Status File yang Diubah
 Lihat daftar file apa saja yang telah Anda ubah atau tambahkan dengan perintah:
@@ -83,7 +83,7 @@ git commit -m "Menambahkan [Nama Fitur/Perubahan] ke sistem inventaris"
 Kirimkan commit lokal Anda ke repositori utama di GitHub:
 
 ```bash
-git push origin main
+git push origin feat/authlogin
 ```
 
 ## Struktur Direktori Proyek
