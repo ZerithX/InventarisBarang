@@ -99,7 +99,6 @@ public class LoginFrame extends JFrame {
                     "Sukses",
                     JOptionPane.INFORMATION_MESSAGE);
 
-            // TODO: Arahkan ke Frame Dashboard yang sesuai setelah dibuat
             if (user.getRole() == Role.ADMIN) {
                 new DashboardAdmin().setVisible(true);
             } else if (user.getRole() == Role.STAFF) {

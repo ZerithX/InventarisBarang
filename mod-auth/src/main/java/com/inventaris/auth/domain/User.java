@@ -25,31 +25,13 @@ public class User {
         return id;
     }
 
-    public void setName(String name) {
-//        if (name == null || name.trim().isEmpty()) {
-//            throw new IlegalArgumentException("Nama tidak boleh kosong");
-//        }
-        this.name = name;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setPassword(String password) {
-//        if  (password == null || password.trim().isEmpty()) {
-//            throw new IlegalArgumentException("Password tidak boleh kosong")
-//        }
-        this.password = password;
     }
 
     public String getPassword() {
         return password;
     }
-
-//    public void setRole(Role role) {
-//        return role;
-//    }
 
     public Role getRole() {
         return role;
