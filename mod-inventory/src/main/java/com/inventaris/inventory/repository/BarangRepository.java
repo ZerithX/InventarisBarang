@@ -119,4 +119,14 @@ public class BarangRepository {
         }
         return Optional.empty();
     }
+
+    public void updateStok(String id, int newStok) throws SQLException {
+        String sql = "UPDATE barang SET stok = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, newStok);
+            ps.setString(2, id);
+            ps.executeUpdate();
+        }
+    }
 }

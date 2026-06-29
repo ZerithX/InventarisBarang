@@ -26,7 +26,7 @@ public class DashboardAdmin extends JFrame {
 
     public DashboardAdmin() {
         this.inventoryService = new InventoryService(new BarangRepository(), new KategoriRepository());
-        this.transactionService = new TransactionService(new TransaksiRepository());
+        this.transactionService = new TransactionService(new TransaksiRepository(), new BarangRepository());
 
         // Initialize dashboard labels
         this.lblTotalKategori = new JLabel("0");

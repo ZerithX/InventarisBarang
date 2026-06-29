@@ -93,4 +93,18 @@ public class TransaksiRepository {
         }
         return list;
     }
+
+    public void save(Transaksi transaksi) throws SQLException {
+        String sql = "INSERT INTO transaksi (id, id_barang, jumlah, tipe, created_by, keterangan) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, transaksi.getId());
+            ps.setString(2, transaksi.getBarang().getId());
+            ps.setInt(3, transaksi.getJumlah());
+            ps.setString(4, transaksi.getTipeTransaksi().name().toLowerCase());
+            ps.setString(5, transaksi.getUser().getId());
+            ps.setString(6, transaksi.getKeterangan());
+            ps.executeUpdate();
+        }
+    }
 }
