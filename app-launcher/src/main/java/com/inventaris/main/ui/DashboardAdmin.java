@@ -54,17 +54,31 @@ public class DashboardAdmin extends JFrame {
                 new EmptyBorder(15, 15, 15, 15)
         ));
 
-        JLabel menuIcon = new JLabel("☰");
-        menuIcon.setFont(new Font("Inter", Font.BOLD, 22));
-        menuIcon.setForeground(Color.DARK_GRAY);
-
         JLabel titleLabel = new JLabel("Sistem Inventaris");
         titleLabel.setFont(new Font("Newsreader", Font.BOLD, 22));
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setForeground(Color.DARK_GRAY);
 
-        topBar.add(menuIcon, BorderLayout.WEST);
-        topBar.add(titleLabel, BorderLayout.CENTER);
+        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        rightPanel.setBackground(Color.WHITE);
+        JLabel lblRole = new JLabel("Admin");
+        lblRole.setFont(new Font("Inter", Font.PLAIN, 14));
+        lblRole.setForeground(Color.GRAY);
+
+        JLabel lblLogout = new JLabel("<html><b style='color:#C83214;font-size:18px;'>&#x2192;]</b></html>");
+        lblLogout.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lblLogout.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                new LoginFrame().setVisible(true);
+                dispose();
+            }
+        });
+
+        rightPanel.add(lblRole);
+        rightPanel.add(lblLogout);
+
+        topBar.add(titleLabel, BorderLayout.WEST);
+        topBar.add(rightPanel, BorderLayout.EAST);
 
         add(topBar, BorderLayout.NORTH);
 
