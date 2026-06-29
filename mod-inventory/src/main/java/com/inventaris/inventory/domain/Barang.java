@@ -1,27 +1,45 @@
 package com.inventaris.inventory.domain;
 
+import com.inventaris.core.exception.StockException;
 import java.util.UUID;
 
 public class Barang {
     private String id;
     private String nama;
-    private String idKategori;
+    private Kategori kategori;
     private int stok;
 
     // existing data (e.g. from database)
-    public Barang(String id, String nama, String idKategori, int stok) {
+    public Barang(String id, String nama, Kategori kategori, int stok) {
         this.id = id;
         this.nama = nama;
-        this.idKategori = idKategori;
+        this.kategori = kategori;
         this.stok = stok;
     }
 
     //  new data (generating UUID)
-    public Barang(String nama, String idKategori, int stok) {
+    public Barang(String nama, Kategori kategori, int stok) {
         this.id = UUID.randomUUID().toString();
         this.nama = nama;
-        this.idKategori = idKategori;
+        this.kategori = kategori;
         this.stok = stok;
+    }
+
+    public void tambahStok(int jumlah) throws StockException {
+        if (jumlah <= 0) {
+            throw new StockException("Jumlah penambahan stok harus lebih besar dari 0!");
+        }
+        this.stok += jumlah;
+    }
+
+    public void kurangiStok(int jumlah) throws StockException {
+        if (jumlah <= 0) {
+            throw new StockException("Jumlah pengurangan stok harus lebih besar dari 0!");
+        }
+        if (jumlah > this.stok) {
+            throw new StockException("Stok tidak mencukupi! Stok saat ini: " + this.stok + ", yang diminta: " + jumlah);
+        }
+        this.stok -= jumlah;
     }
 
     public String getId() {
@@ -40,19 +58,19 @@ public class Barang {
         this.nama = nama;
     }
 
-    public String getIdKategori() {
-        return idKategori;
+    public Kategori getKategori() {
+        return kategori;
     }
 
-    public void setIdKategori(String idKategori) {
-        this.idKategori = idKategori;
+    public void setKategori(Kategori kategori) {
+        this.kategori = kategori;
     }
 
     public int getStok() {
         return stok;
     }
 
-    public void setStok(int stok) {
+    private void setStok(int stok) {
         this.stok = stok;
     }
 }

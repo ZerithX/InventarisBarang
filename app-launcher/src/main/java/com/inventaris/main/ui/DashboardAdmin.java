@@ -235,7 +235,7 @@ public class DashboardAdmin extends JFrame {
                     String shortId = id.length() > 8 ? id.substring(0, 8) : id;
                     String titleText = shortId + " / " + b.getNama();
 
-                    String katName = kategoriMap.getOrDefault(b.getIdKategori(), "Tidak Kategori");
+                    String katName = b.getKategori() != null ? b.getKategori().getNama() : "Tidak Kategori";
                     String subtitleText = katName + " • Stok: " + b.getStok();
 
                     boolean isAvailable = b.getStok() >= 10;
