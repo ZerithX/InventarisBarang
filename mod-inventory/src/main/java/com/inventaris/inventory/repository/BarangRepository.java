@@ -42,7 +42,7 @@ public class BarangRepository {
 
     public List<Barang> findAll() throws SQLException {
         List<Barang> list = new ArrayList<>();
-        String sql = "SELECT b.id, b.nama, b.id_kategori, k.nama AS nama_kategori, b.stok " +
+        String sql = "SELECT b.id, b.nama, b.id_kategori, k.nama AS nama_kategori, b.stok, b.deskripsi " +
                      "FROM barang b " +
                      "INNER JOIN kategori k ON b.id_kategori = k.id";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -57,7 +57,8 @@ public class BarangRepository {
                         rs.getString("id"),
                         rs.getString("nama"),
                         kat,
-                        rs.getInt("stok")
+                        rs.getInt("stok"),
+                        rs.getString("deskripsi")
                 );
                 list.add(b);
             }
@@ -67,7 +68,7 @@ public class BarangRepository {
 
     public List<Barang> findByNameLike(String name) throws SQLException {
         List<Barang> list = new ArrayList<>();
-        String sql = "SELECT b.id, b.nama, b.id_kategori, k.nama AS nama_kategori, b.stok " +
+        String sql = "SELECT b.id, b.nama, b.id_kategori, k.nama AS nama_kategori, b.stok, b.deskripsi " +
                      "FROM barang b " +
                      "INNER JOIN kategori k ON b.id_kategori = k.id " +
                      "WHERE b.nama LIKE ?";
@@ -84,7 +85,8 @@ public class BarangRepository {
                             rs.getString("id"),
                             rs.getString("nama"),
                             kat,
-                            rs.getInt("stok")
+                            rs.getInt("stok"),
+                            rs.getString("deskripsi")
                     );
                     list.add(b);
                 }
@@ -94,7 +96,7 @@ public class BarangRepository {
     }
 
     public Optional<Barang> findById(String id) throws SQLException {
-        String sql = "SELECT b.id, b.nama, b.id_kategori, k.nama AS nama_kategori, b.stok " +
+        String sql = "SELECT b.id, b.nama, b.id_kategori, k.nama AS nama_kategori, b.stok, b.deskripsi " +
                      "FROM barang b " +
                      "INNER JOIN kategori k ON b.id_kategori = k.id " +
                      "WHERE b.id = ?";
@@ -111,7 +113,8 @@ public class BarangRepository {
                             rs.getString("id"),
                             rs.getString("nama"),
                             kat,
-                            rs.getInt("stok")
+                            rs.getInt("stok"),
+                            rs.getString("deskripsi")
                     );
                     return Optional.of(b);
                 }

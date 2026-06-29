@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `barang` (
     `nama` varchar(255) NOT NULL,
     `id_kategori` varchar(36) NOT NULL,
     `stok` int(11) NOT NULL DEFAULT 0,
+    `deskripsi` text DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `fk_barang_kategori` (`id_kategori`),
     CONSTRAINT `fk_barang_kategori` FOREIGN KEY (`id_kategori`) REFERENCES `kategori` (`id`) ON UPDATE CASCADE
@@ -60,11 +61,11 @@ INSERT INTO `kategori` (`id`, `nama`) VALUES
 ON DUPLICATE KEY UPDATE id=id;
 
 -- Dumping data for table `barang`
-INSERT INTO `barang` (`id`, `nama`, `id_kategori`, `stok`) VALUES
-('156d74d9-5b4e-4e44-cae9-f9ae69fa0143', 'Laptop Pro X', 'e23a41a6-281b-4b11-97b6-c67b36f7de10', 45),
-('267e85ea-6c5f-4f55-dbfa-0abf7afb1254', 'Monitor 27" 4K', 'e23a41a6-281b-4b11-97b6-c67b36f7de10', 2),
-('378f96fb-7d60-4066-ec0b-1bcd8bcd2365', 'Ergonomic Chair', 'f34b52b7-392c-4c22-a8c7-d78c47f8ef21', 12),
-('4890a7fc-8e71-4177-fd1c-2cde9cde3476', 'USB-C Hub', '045c63c8-4a3d-4d33-b9d8-e89d58f9f032', 3)
+INSERT INTO `barang` (`id`, `nama`, `id_kategori`, `stok`, `deskripsi`) VALUES
+('156d74d9-5b4e-4e44-cae9-f9ae69fa0143', 'Laptop Pro X', 'e23a41a6-281b-4b11-97b6-c67b36f7de10', 45, 'Laptop performa tinggi untuk kebutuhan programming dan komputasi berat.'),
+('267e85ea-6c5f-4f55-dbfa-0abf7afb1254', 'Monitor 27" 4K', 'e23a41a6-281b-4b11-97b6-c67b36f7de10', 2, 'Monitor resolusi tinggi 27 inch 4K UHD, akurasi warna tinggi untuk editing.'),
+('378f96fb-7d60-4066-ec0b-1bcd8bcd2365', 'Ergonomic Chair', 'f34b52b7-392c-4c22-a8c7-d78c47f8ef21', 12, 'Kursi kerja ergonomis dengan penyangga punggung dan tangan yang dapat diatur.'),
+('4890a7fc-8e71-4177-fd1c-2cde9cde3476', 'USB-C Hub', '045c63c8-4a3d-4d33-b9d8-e89d58f9f032', 3, 'Hub multi-port USB Type-C ke HDMI, USB 3.0, dan pembaca kartu memori.')
 ON DUPLICATE KEY UPDATE id=id;
 
 -- Dumping data for table `transaksi`

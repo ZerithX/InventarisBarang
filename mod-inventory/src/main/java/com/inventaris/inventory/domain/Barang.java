@@ -8,21 +8,24 @@ public class Barang {
     private String nama;
     private Kategori kategori;
     private int stok;
+    private String deskripsi;
 
     // existing data (e.g. from database)
-    public Barang(String id, String nama, Kategori kategori, int stok) {
+    public Barang(String id, String nama, Kategori kategori, int stok, String deskripsi) {
         this.id = id;
         this.nama = nama;
         this.kategori = kategori;
         this.stok = stok;
+        this.deskripsi = deskripsi;
     }
 
     //  new data (generating UUID)
-    public Barang(String nama, Kategori kategori, int stok) {
+    public Barang(String nama, Kategori kategori, int stok, String deskripsi) {
         this.id = UUID.randomUUID().toString();
         this.nama = nama;
         this.kategori = kategori;
         this.stok = stok;
+        this.deskripsi = deskripsi;
     }
 
     public void tambahStok(int jumlah) throws StockException {
@@ -72,5 +75,13 @@ public class Barang {
 
     private void setStok(int stok) {
         this.stok = stok;
+    }
+
+    public String getDeskripsi() {
+        return deskripsi;
+    }
+
+    public void setDeskripsi(String deskripsi) {
+        this.deskripsi = deskripsi;
     }
 }
