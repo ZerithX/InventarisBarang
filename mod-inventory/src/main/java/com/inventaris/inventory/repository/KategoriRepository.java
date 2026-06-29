@@ -59,4 +59,24 @@ public class KategoriRepository {
         }
         return Optional.empty();
     }
+
+    public void save(Kategori kat) throws SQLException {
+        String sql = "INSERT INTO kategori (id, nama) VALUES (?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, kat.getId());
+            ps.setString(2, kat.getNama());
+            ps.executeUpdate();
+        }
+    }
+
+    public void update(Kategori kat) throws SQLException {
+        String sql = "UPDATE kategori SET nama = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, kat.getNama());
+            ps.setString(2, kat.getId());
+            ps.executeUpdate();
+        }
+    }
 }

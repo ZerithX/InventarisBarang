@@ -132,4 +132,30 @@ public class BarangRepository {
             ps.executeUpdate();
         }
     }
+
+    public void save(Barang b) throws SQLException {
+        String sql = "INSERT INTO barang (id, nama, id_kategori, stok, deskripsi) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, b.getId());
+            ps.setString(2, b.getNama());
+            ps.setString(3, b.getKategori() != null ? b.getKategori().getId() : null);
+            ps.setInt(4, b.getStok());
+            ps.setString(5, b.getDeskripsi());
+            ps.executeUpdate();
+        }
+    }
+
+    public void update(Barang b) throws SQLException {
+        String sql = "UPDATE barang SET nama = ?, id_kategori = ?, stok = ?, deskripsi = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, b.getNama());
+            ps.setString(2, b.getKategori() != null ? b.getKategori().getId() : null);
+            ps.setInt(3, b.getStok());
+            ps.setString(4, b.getDeskripsi());
+            ps.setString(5, b.getId());
+            ps.executeUpdate();
+        }
+    }
 }
