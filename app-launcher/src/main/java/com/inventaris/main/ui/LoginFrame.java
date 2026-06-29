@@ -4,6 +4,8 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.inventaris.auth.domain.MenuLauncher;
 import com.inventaris.auth.domain.Role;
 import com.inventaris.auth.domain.User;
+import com.inventaris.auth.domain.Admin;
+import com.inventaris.auth.domain.Staff;
 import com.inventaris.auth.repository.UserRepository;
 import com.inventaris.auth.service.AuthService;
 import com.inventaris.core.exception.AuthException;
@@ -32,13 +34,13 @@ public class LoginFrame extends JFrame {
         // Daftarkan MenuLauncher secara polimorfik untuk menghindari circular dependency
         User.setMenuLauncher(new MenuLauncher() {
             @Override
-            public void launchAdminMenu() {
+            public void launchAdminMenu(Admin admin) {
                 new DashboardAdmin().setVisible(true);
             }
 
             @Override
-            public void launchStaffMenu() {
-                new DashboardStaff().setVisible(true);
+            public void launchStaffMenu(Staff staff) {
+                new DashboardStaff(staff).setVisible(true);
             }
         });
 

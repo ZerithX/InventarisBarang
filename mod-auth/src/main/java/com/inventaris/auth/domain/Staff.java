@@ -9,7 +9,7 @@ public class Staff extends User {
     public void tampilkanMenu() {
         MenuLauncher launcher = getMenuLauncher();
         if (launcher != null) {
-            launcher.launchStaffMenu();
+            launcher.launchStaffMenu(this);
         }
     }
 }

@@ -38,4 +38,8 @@ public class TransactionService {
         // 3. Sinkronisasikan stok barang terbaru ke database
         barangRepository.updateStok(transaksi.getBarang().getId(), transaksi.getBarang().getStok());
     }
+
+    public List<Transaksi> getTransactionsByUser(String userId) throws SQLException {
+        return transaksiRepository.findByUserId(userId);
+    }
 }

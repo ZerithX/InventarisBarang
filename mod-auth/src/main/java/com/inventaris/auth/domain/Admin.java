@@ -9,7 +9,7 @@ public class Admin extends User {
     public void tampilkanMenu() {
         MenuLauncher launcher = getMenuLauncher();
         if (launcher != null) {
-            launcher.launchAdminMenu();
+            launcher.launchAdminMenu(this);
         }
     }
 }
