@@ -1,38 +1,43 @@
 package com.inventaris.transaction.domain;
 
+import com.inventaris.auth.domain.User;
+import com.inventaris.core.exception.StockException;
+import com.inventaris.inventory.domain.Barang;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Transaksi {
+public abstract class Transaksi {
     private String id;
-    private String idBarang;
+    private Barang barang;
     private int jumlah;
     private TipeTransaksi tipeTransaksi;
-    private String createdBy;
+    private User user;
     private LocalDateTime createdAt;
     private String keterangan;
 
     // Constructor for existing data (e.g. from database)
-    public Transaksi(String id, String idBarang, int jumlah, TipeTransaksi tipeTransaksi, String createdBy, LocalDateTime createdAt, String keterangan) {
+    public Transaksi(String id, Barang barang, int jumlah, TipeTransaksi tipeTransaksi, User user, LocalDateTime createdAt, String keterangan) {
         this.id = id;
-        this.idBarang = idBarang;
+        this.barang = barang;
         this.jumlah = jumlah;
         this.tipeTransaksi = tipeTransaksi;
-        this.createdBy = createdBy;
+        this.user = user;
         this.createdAt = createdAt;
         this.keterangan = keterangan;
     }
 
     // Constructor for new data (generating UUID and createdAt automatically)
-    public Transaksi(String idBarang, int jumlah, TipeTransaksi tipeTransaksi, String createdBy, String keterangan) {
+    public Transaksi(Barang barang, int jumlah, TipeTransaksi tipeTransaksi, User user, String keterangan) {
         this.id = UUID.randomUUID().toString();
-        this.idBarang = idBarang;
+        this.barang = barang;
         this.jumlah = jumlah;
         this.tipeTransaksi = tipeTransaksi;
-        this.createdBy = createdBy;
+        this.user = user;
         this.createdAt = LocalDateTime.now();
         this.keterangan = keterangan;
     }
+
+    public abstract void prosesStok() throws StockException;
 
     public String getId() {
         return id;
@@ -42,12 +47,12 @@ public class Transaksi {
         this.id = id;
     }
 
-    public String getIdBarang() {
-        return idBarang;
+    public Barang getBarang() {
+        return barang;
     }
 
-    public void setIdBarang(String idBarang) {
-        this.idBarang = idBarang;
+    public void setBarang(Barang barang) {
+        this.barang = barang;
     }
 
     public int getJumlah() {
@@ -66,12 +71,12 @@ public class Transaksi {
         this.tipeTransaksi = tipeTransaksi;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public User getUser() {
+        return user;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDateTime getCreatedAt() {

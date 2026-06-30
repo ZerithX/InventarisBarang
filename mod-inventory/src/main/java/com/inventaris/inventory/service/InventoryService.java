@@ -55,4 +55,24 @@ public class InventoryService {
         }
         return map;
     }
+
+    public List<Kategori> getAllKategori() throws SQLException {
+        return kategoriRepository.findAll();
+    }
+
+    public void saveBarang(Barang b) throws SQLException {
+        barangRepository.save(b);
+    }
+
+    public void updateBarang(Barang b) throws SQLException {
+        barangRepository.update(b);
+    }
+
+    public void saveKategori(Kategori k) throws SQLException {
+        kategoriRepository.save(k);
+    }
+
+    public void updateKategori(Kategori k) throws SQLException {
+        kategoriRepository.update(k);
+    }
 }

@@ -1,8 +1,11 @@
 package com.inventaris.main.ui;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.inventaris.auth.domain.MenuLauncher;
 import com.inventaris.auth.domain.Role;
 import com.inventaris.auth.domain.User;
+import com.inventaris.auth.domain.Admin;
+import com.inventaris.auth.domain.Staff;
 import com.inventaris.auth.repository.UserRepository;
 import com.inventaris.auth.service.AuthService;
 import com.inventaris.core.exception.AuthException;
@@ -27,6 +30,19 @@ public class LoginFrame extends JFrame {
         setContentPane(panelUtama);
         setTitle("Sistem Inventaris - Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Daftarkan MenuLauncher secara polimorfik untuk menghindari circular dependency
+        User.setMenuLauncher(new MenuLauncher() {
+            @Override
+            public void launchAdminMenu(Admin admin) {
+                new DashboardAdmin().setVisible(true);
+            }
+
+            @Override
+            public void launchStaffMenu(Staff staff) {
+                new DashboardStaff(staff).setVisible(true);
+            }
+        });
 
         applyFlatLafStyling();
         initListeners();
@@ -99,11 +115,9 @@ public class LoginFrame extends JFrame {
                     "Sukses",
                     JOptionPane.INFORMATION_MESSAGE);
 
-            if (user.getRole() == Role.ADMIN) {
-                new DashboardAdmin().setVisible(true);
-            } else if (user.getRole() == Role.STAFF) {
-                new DashboardStaff().setVisible(true);
-            }
+            // Polymorphic call - compiler hanya tahu objek ini adalah User,
+            // namun runtime JVM akan mengeksekusi override method sesuai tipe riil subclass (Admin/Staff)
+            user.tampilkanMenu();
 
             this.dispose();
 

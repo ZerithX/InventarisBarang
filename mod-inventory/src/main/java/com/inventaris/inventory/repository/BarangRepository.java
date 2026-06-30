@@ -2,6 +2,7 @@ package com.inventaris.inventory.repository;
 
 import com.inventaris.core.util.DatabaseConnection;
 import com.inventaris.inventory.domain.Barang;
+import com.inventaris.inventory.domain.Kategori;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,16 +42,23 @@ public class BarangRepository {
 
     public List<Barang> findAll() throws SQLException {
         List<Barang> list = new ArrayList<>();
-        String sql = "SELECT id, nama, id_kategori, stok FROM barang";
+        String sql = "SELECT b.id, b.nama, b.id_kategori, k.nama AS nama_kategori, b.stok, b.deskripsi " +
+                     "FROM barang b " +
+                     "INNER JOIN kategori k ON b.id_kategori = k.id";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
+                Kategori kat = new Kategori(
+                        rs.getString("id_kategori"),
+                        rs.getString("nama_kategori")
+                );
                 Barang b = new Barang(
                         rs.getString("id"),
                         rs.getString("nama"),
-                        rs.getString("id_kategori"),
-                        rs.getInt("stok")
+                        kat,
+                        rs.getInt("stok"),
+                        rs.getString("deskripsi")
                 );
                 list.add(b);
             }
@@ -60,17 +68,25 @@ public class BarangRepository {
 
     public List<Barang> findByNameLike(String name) throws SQLException {
         List<Barang> list = new ArrayList<>();
-        String sql = "SELECT id, nama, id_kategori, stok FROM barang WHERE nama LIKE ?";
+        String sql = "SELECT b.id, b.nama, b.id_kategori, k.nama AS nama_kategori, b.stok, b.deskripsi " +
+                     "FROM barang b " +
+                     "INNER JOIN kategori k ON b.id_kategori = k.id " +
+                     "WHERE b.nama LIKE ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, "%" + name + "%");
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
+                    Kategori kat = new Kategori(
+                            rs.getString("id_kategori"),
+                            rs.getString("nama_kategori")
+                    );
                     Barang b = new Barang(
                             rs.getString("id"),
                             rs.getString("nama"),
-                            rs.getString("id_kategori"),
-                            rs.getInt("stok")
+                            kat,
+                            rs.getInt("stok"),
+                            rs.getString("deskripsi")
                     );
                     list.add(b);
                 }
@@ -80,22 +96,66 @@ public class BarangRepository {
     }
 
     public Optional<Barang> findById(String id) throws SQLException {
-        String sql = "SELECT id, nama, id_kategori, stok FROM barang WHERE id = ?";
+        String sql = "SELECT b.id, b.nama, b.id_kategori, k.nama AS nama_kategori, b.stok, b.deskripsi " +
+                     "FROM barang b " +
+                     "INNER JOIN kategori k ON b.id_kategori = k.id " +
+                     "WHERE b.id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
+                    Kategori kat = new Kategori(
+                            rs.getString("id_kategori"),
+                            rs.getString("nama_kategori")
+                    );
                     Barang b = new Barang(
                             rs.getString("id"),
                             rs.getString("nama"),
-                            rs.getString("id_kategori"),
-                            rs.getInt("stok")
+                            kat,
+                            rs.getInt("stok"),
+                            rs.getString("deskripsi")
                     );
                     return Optional.of(b);
                 }
             }
         }
         return Optional.empty();
+    }
+
+    public void updateStok(String id, int newStok) throws SQLException {
+        String sql = "UPDATE barang SET stok = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, newStok);
+            ps.setString(2, id);
+            ps.executeUpdate();
+        }
+    }
+
+    public void save(Barang b) throws SQLException {
+        String sql = "INSERT INTO barang (id, nama, id_kategori, stok, deskripsi) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, b.getId());
+            ps.setString(2, b.getNama());
+            ps.setString(3, b.getKategori() != null ? b.getKategori().getId() : null);
+            ps.setInt(4, b.getStok());
+            ps.setString(5, b.getDeskripsi());
+            ps.executeUpdate();
+        }
+    }
+
+    public void update(Barang b) throws SQLException {
+        String sql = "UPDATE barang SET nama = ?, id_kategori = ?, stok = ?, deskripsi = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, b.getNama());
+            ps.setString(2, b.getKategori() != null ? b.getKategori().getId() : null);
+            ps.setInt(3, b.getStok());
+            ps.setString(4, b.getDeskripsi());
+            ps.setString(5, b.getId());
+            ps.executeUpdate();
+        }
     }
 }

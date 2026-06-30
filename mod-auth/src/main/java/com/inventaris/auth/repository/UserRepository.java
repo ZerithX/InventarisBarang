@@ -2,6 +2,8 @@ package com.inventaris.auth.repository;
 
 import com.inventaris.auth.domain.Role;
 import com.inventaris.auth.domain.User;
+import com.inventaris.auth.domain.Admin;
+import com.inventaris.auth.domain.Staff;
 import com.inventaris.core.util.DatabaseConnection;
 
 import java.sql.Connection;
@@ -28,11 +30,19 @@ public class UserRepository {
             ps.setString(1, name);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    User user = new User(
-                            rs.getString("name"),
-                            rs.getString("password"),
-                            Role.valueOf(rs.getString("role"))
-                    );
+                    Role role = Role.valueOf(rs.getString("role").toUpperCase());
+                    User user;
+                    if (role == Role.ADMIN) {
+                        user = new Admin(
+                                rs.getString("name"),
+                                rs.getString("password")
+                        );
+                    } else {
+                        user = new Staff(
+                                rs.getString("name"),
+                                rs.getString("password")
+                        );
+                    }
                     user.setId(rs.getString("id"));
                     return Optional.of(user);
                 }
