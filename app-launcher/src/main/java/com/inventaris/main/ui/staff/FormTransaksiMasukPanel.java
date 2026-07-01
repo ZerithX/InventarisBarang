@@ -464,7 +464,6 @@ public class FormTransaksiMasukPanel extends JPanel {
 
         try {
             transactionService.executeTransaction(transaksi);
-            JOptionPane.showMessageDialog(this, "Transaksi barang masuk berhasil disimpan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
             
             if (refreshCallback != null) {
                 refreshCallback.run();

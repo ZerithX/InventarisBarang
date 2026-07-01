@@ -119,6 +119,11 @@ public class BottomSheetOverlay extends JPanel {
     }
 
     public void closeSheet() {
+        if (sheetPanel == null) {
+            setVisible(false);
+            return;
+        }
+
         if (timer != null && timer.isRunning()) {
             timer.stop();
         }
@@ -132,7 +137,9 @@ public class BottomSheetOverlay extends JPanel {
                     if (currentY > targetY) currentY = targetY;
                     alpha = 1.0f - (float) (currentY - (getHeight() - sheetHeight)) / sheetHeight;
                     if (alpha < 0) alpha = 0;
-                    sheetPanel.setBounds(0, currentY, getWidth(), sheetHeight);
+                    if (sheetPanel != null) {
+                        sheetPanel.setBounds(0, currentY, getWidth(), sheetHeight);
+                    }
                     repaint();
                 } else {
                     timer.stop();

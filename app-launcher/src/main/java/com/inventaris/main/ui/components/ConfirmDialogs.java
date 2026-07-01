@@ -57,7 +57,7 @@ public class ConfirmDialogs {
         // CENTER: Content Section with Title & Description
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBackground(Color.WHITE);
+        contentPanel.setOpaque(false);
         contentPanel.setBorder(new EmptyBorder(20, 25, 10, 25));
 
         JLabel lblTitle = new JLabel(titleText);
@@ -127,13 +127,13 @@ public class ConfirmDialogs {
      */
     public static JPanel createSaveConfirmationDialog(String titleText, String descText, Runnable onConfirm, Runnable onCancel) {
         JPanel dialog = new JPanel(new BorderLayout());
-        dialog.setBackground(Color.WHITE);
+        dialog.setOpaque(false);
         dialog.setBorder(new EmptyBorder(25, 25, 20, 25));
 
         // Center panel to display left-aligned Title and Question
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBackground(Color.WHITE);
+        contentPanel.setOpaque(false);
         contentPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel lblTitle = new JLabel(titleText);
@@ -152,7 +152,7 @@ public class ConfirmDialogs {
 
         // Bottom panel for action buttons aligned to the right
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
-        footerPanel.setBackground(Color.WHITE);
+        footerPanel.setOpaque(false);
         footerPanel.setBorder(new EmptyBorder(15, 0, 0, 0));
 
         // Flat button style for BATAL
