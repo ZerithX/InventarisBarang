@@ -369,15 +369,6 @@ public class FormTransaksiMasukPanel extends JPanel {
 
         revalidate();
         repaint();
-
-        // Otomatis scroll ke bawah jika memilih barang baru agar form input langsung terlihat
-        if (idx == 1) {
-            SwingUtilities.invokeLater(() -> {
-                if (scrollPane != null) {
-                    scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
-                }
-            });
-        }
     }
 
     private void simpanTransaksi() {
