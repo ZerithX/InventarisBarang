@@ -160,11 +160,28 @@ public class BarangRepository {
     }
 
     public void delete(String id) throws SQLException {
-        String sql = "DELETE FROM barang WHERE id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, id);
-            ps.executeUpdate();
+        String sqlDeleteTransactions = "DELETE FROM transaksi WHERE id_barang = ?";
+        String sqlDeleteBarang = "DELETE FROM barang WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            conn.setAutoCommit(false); // Mulai transaksi database
+            try (PreparedStatement psTrans = conn.prepareStatement(sqlDeleteTransactions);
+                 PreparedStatement psBarang = conn.prepareStatement(sqlDeleteBarang)) {
+                
+                // 1. Hapus riwayat transaksi barang
+                psTrans.setString(1, id);
+                psTrans.executeUpdate();
+                
+                // 2. Hapus barang
+                psBarang.setString(1, id);
+                psBarang.executeUpdate();
+                
+                conn.commit(); // Commit transaksi jika keduanya sukses
+            } catch (SQLException ex) {
+                conn.rollback(); // Rollback jika ada yang gagal
+                throw ex;
+            } finally {
+                conn.setAutoCommit(true);
+            }
         }
     }
 }

@@ -171,6 +171,12 @@ public class BottomSheetOverlay extends JPanel {
         int y = (getHeight() - height) / 2;
         dialogPanel.setBounds(x, y, width, height);
 
+        // Force layout pass for absolute positioning inside GlassPane
+        dialogPanel.revalidate();
+        dialogPanel.repaint();
+        revalidate();
+        repaint();
+
         // Fade in alpha
         alpha = 0f;
         setVisible(true);
