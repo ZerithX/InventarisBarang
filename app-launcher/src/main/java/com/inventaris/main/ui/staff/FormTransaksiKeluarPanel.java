@@ -260,7 +260,7 @@ public class FormTransaksiKeluarPanel extends JPanel {
 
     private void loadData() {
         cbBarang.removeAllItems();
-        cbBarang.addItem("Cari atau pilih barang...");
+        cbBarang.addItem("pilih barang...");
 
         try {
             barangList = inventoryService.getAllBarang();
