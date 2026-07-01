@@ -31,10 +31,27 @@ cd InventarisBarang
 2. Pilih "Open" dan arahkan ke folder proyek hasil kloning (`InventarisBarang`).
 3. Tunggu proses sinkronisasi dan indexing selesai sepenuhnya.
 
-### 3. Jalankan Aplikasi
+### 3. Setup Library Dependensi (Manual)
+Karena proyek ini tidak menggunakan build tool otomatis (seperti Maven/Gradle) dan file konfigurasi IDE diabaikan oleh `.gitignore`, Anda perlu mengunduh dan menyetel library eksternal secara manual agar proyek dapat dikompilasi tanpa error:
+
+> [!IMPORTANT]
+> **Tautan Resmi Unduhan Library (.jar):**
+> * **FlatLaf (UI Theme):** [Unduh FlatLaf di FormDev](https://www.formdev.com/flatlaf/#download)
+> * **MySQL Connector/J (Database Driver):** [Unduh MySQL Connector di Oracle](https://dev.mysql.com/downloads/connector/j/) (Pilih *Platform Independent* untuk versi zip/tar.gz berisi `.jar`)
+
+**Langkah menambahkan library di IntelliJ IDEA:**
+1. Unduh kedua file `.jar` dari tautan di atas.
+2. Buka **File** > **Project Structure** (`Ctrl + Alt + Shift + S`).
+3. Pilih **Libraries** pada panel kiri, lalu klik tombol **+** (New Project Library) > **Java**.
+4. Cari dan pilih file `flatlaf-3.x.x.jar` dan `mysql-connector-j-x.x.x.jar` yang telah Anda unduh.
+5. Kaitkan library tersebut ke modul yang membutuhkannya (disarankan untuk memilih seluruh modul agar terhindar dari error kompilasi).
+6. Klik **Apply** lalu **OK**.
+
+### 4. Jalankan Aplikasi
 1. Cari kelas utama `MainApplication.java` yang berada di dalam modul `app-launcher`.
 2. Klik tombol **Run** (ikon segitiga hijau) pada IDE Anda.
 3. Aplikasi akan berjalan di environment lokal Anda.
+
 
 ## Alur Kontribusi (Git Workflow)
 
