@@ -55,13 +55,15 @@ public class FormTransaksiKeluarPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
-        // Header Panel (Back Arrow & Title)
-        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));
+        // Header Panel (Centered Title & Balanced Back Button)
+        JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(Color.WHITE);
         headerPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#EBEBEB")));
+        headerPanel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 50));
 
         JLabel lblBack = new JLabel("<html><b style='font-size:20px;color:#1E293B;'>&larr;</b></html>");
         lblBack.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lblBack.setBorder(new EmptyBorder(0, 20, 0, 0));
         lblBack.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -69,13 +71,17 @@ public class FormTransaksiKeluarPanel extends JPanel {
             }
         });
 
-        JLabel lblTitle = new JLabel("Transaksi Barang Keluar");
+        JLabel lblTitle = new JLabel("Transaksi Barang Keluar", SwingConstants.CENTER);
         lblTitle.setFont(new Font("Inter", Font.BOLD, 18));
         lblTitle.setForeground(Color.decode("#1E293B"));
 
-        headerPanel.add(lblBack);
-        headerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
-        headerPanel.add(lblTitle);
+        // Placeholder untuk keseimbangan layout agar tulisan center secara presisi
+        JLabel lblPlaceholder = new JLabel("<html><b style='font-size:20px;color:white;'>&larr;</b></html>");
+        lblPlaceholder.setBorder(new EmptyBorder(0, 0, 0, 20));
+
+        headerPanel.add(lblBack, BorderLayout.WEST);
+        headerPanel.add(lblTitle, BorderLayout.CENTER);
+        headerPanel.add(lblPlaceholder, BorderLayout.EAST);
 
         // Body Panel
         JPanel bodyPanel = new JPanel() {
@@ -238,6 +244,15 @@ public class FormTransaksiKeluarPanel extends JPanel {
         scrollPane.setBorder(null);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        // Forward mouse wheel events from text area to parent scroll pane to prevent scroll trap/lag
+        java.awt.event.MouseWheelListener forwardingListener = e -> {
+            if (scrollPane != null) {
+                scrollPane.dispatchEvent(javax.swing.SwingUtilities.convertMouseEvent(e.getComponent(), e, scrollPane));
+            }
+        };
+        ketScroll.addMouseWheelListener(forwardingListener);
+        txtKeterangan.addMouseWheelListener(forwardingListener);
 
         add(headerPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
