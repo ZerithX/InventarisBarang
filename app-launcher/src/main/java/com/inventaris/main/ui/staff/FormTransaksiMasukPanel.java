@@ -83,7 +83,17 @@ public class FormTransaksiMasukPanel extends JPanel {
         headerPanel.add(lblTitle);
 
         // Form Body Panel inside JScrollPane to handle new item fields expansion
-        JPanel bodyPanel = new JPanel();
+        JPanel bodyPanel = new JPanel() {
+            @Override
+            public Dimension getPreferredSize() {
+                Dimension d = super.getPreferredSize();
+                Container parent = getParent();
+                if (parent instanceof JViewport) {
+                    d.width = parent.getWidth();
+                }
+                return d;
+            }
+        };
         bodyPanel.setLayout(new BoxLayout(bodyPanel, BoxLayout.Y_AXIS));
         bodyPanel.setBackground(Color.WHITE);
         bodyPanel.setBorder(new EmptyBorder(15, 20, 15, 20));
@@ -100,7 +110,7 @@ public class FormTransaksiMasukPanel extends JPanel {
         cbBarang = new JComboBox<>();
         cbBarang.setFont(new Font("Inter", Font.PLAIN, 14));
         cbBarang.putClientProperty("JComponent.roundRect", true);
-        cbBarang.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        cbBarang.setMaximumSize(new Dimension(800, 40));
         cbBarang.setPreferredSize(new Dimension(Integer.MAX_VALUE, 40));
         cbBarang.setAlignmentX(Component.LEFT_ALIGNMENT);
         cbBarang.setBackground(Color.WHITE);
@@ -116,7 +126,7 @@ public class FormTransaksiMasukPanel extends JPanel {
                 BorderFactory.createLineBorder(Color.decode("#BFDBFE"), 1, true), // Blue 200 border
                 new EmptyBorder(10, 15, 10, 15)
         ));
-        infoStokBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
+        infoStokBox.setMaximumSize(new Dimension(800, 70));
         infoStokBox.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel lblStokHeader = new JLabel("ⓘ  STOK SAAT INI");
@@ -146,15 +156,17 @@ public class FormTransaksiMasukPanel extends JPanel {
         JLabel lblNamaBaru = new JLabel("NAMA BARANG BARU");
         lblNamaBaru.setFont(new Font("Inter", Font.BOLD, 11));
         lblNamaBaru.setForeground(Color.GRAY);
+        lblNamaBaru.setAlignmentX(Component.LEFT_ALIGNMENT);
         newBarangContainer.add(lblNamaBaru);
         newBarangContainer.add(Box.createRigidArea(new Dimension(0, 6)));
 
         txtNamaBarangBaru = new JTextField();
         txtNamaBarangBaru.setFont(new Font("Inter", Font.PLAIN, 14));
         txtNamaBarangBaru.putClientProperty("JComponent.roundRect", true);
-        txtNamaBarangBaru.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        txtNamaBarangBaru.setMaximumSize(new Dimension(800, 40));
         txtNamaBarangBaru.setPreferredSize(new Dimension(Integer.MAX_VALUE, 40));
         txtNamaBarangBaru.setMargin(new Insets(5, 10, 5, 10));
+        txtNamaBarangBaru.setAlignmentX(Component.LEFT_ALIGNMENT);
         newBarangContainer.add(txtNamaBarangBaru);
         newBarangContainer.add(Box.createRigidArea(new Dimension(0, 12)));
 
@@ -162,15 +174,17 @@ public class FormTransaksiMasukPanel extends JPanel {
         JLabel lblKategoriBaru = new JLabel("KATEGORI BARANG");
         lblKategoriBaru.setFont(new Font("Inter", Font.BOLD, 11));
         lblKategoriBaru.setForeground(Color.GRAY);
+        lblKategoriBaru.setAlignmentX(Component.LEFT_ALIGNMENT);
         newBarangContainer.add(lblKategoriBaru);
         newBarangContainer.add(Box.createRigidArea(new Dimension(0, 6)));
 
         cbKategoriBaru = new JComboBox<>();
         cbKategoriBaru.setFont(new Font("Inter", Font.PLAIN, 14));
         cbKategoriBaru.putClientProperty("JComponent.roundRect", true);
-        cbKategoriBaru.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        cbKategoriBaru.setMaximumSize(new Dimension(800, 40));
         cbKategoriBaru.setPreferredSize(new Dimension(Integer.MAX_VALUE, 40));
         cbKategoriBaru.setBackground(Color.WHITE);
+        cbKategoriBaru.setAlignmentX(Component.LEFT_ALIGNMENT);
         newBarangContainer.add(cbKategoriBaru);
         newBarangContainer.add(Box.createRigidArea(new Dimension(0, 12)));
 
@@ -178,6 +192,7 @@ public class FormTransaksiMasukPanel extends JPanel {
         JLabel lblDeskripsiBaru = new JLabel("DESKRIPSI BARANG (opsional)");
         lblDeskripsiBaru.setFont(new Font("Inter", Font.BOLD, 11));
         lblDeskripsiBaru.setForeground(Color.GRAY);
+        lblDeskripsiBaru.setAlignmentX(Component.LEFT_ALIGNMENT);
         newBarangContainer.add(lblDeskripsiBaru);
         newBarangContainer.add(Box.createRigidArea(new Dimension(0, 6)));
 
@@ -187,7 +202,7 @@ public class FormTransaksiMasukPanel extends JPanel {
         txtDeskripsiBaru.setWrapStyleWord(true);
         JScrollPane descScroll = new JScrollPane(txtDeskripsiBaru);
         descScroll.setBorder(BorderFactory.createLineBorder(Color.decode("#CBD5E1"), 1, true));
-        descScroll.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
+        descScroll.setMaximumSize(new Dimension(800, 70));
         descScroll.setPreferredSize(new Dimension(Integer.MAX_VALUE, 70));
         descScroll.setAlignmentX(Component.LEFT_ALIGNMENT);
         newBarangContainer.add(descScroll);
@@ -203,11 +218,10 @@ public class FormTransaksiMasukPanel extends JPanel {
         bodyPanel.add(lblJumlah);
         bodyPanel.add(Box.createRigidArea(new Dimension(0, 6)));
 
-        // Wrap txtJumlah with a custom text field layout showing 'Unit' on the right
         txtJumlah = new JTextField("0");
         txtJumlah.setFont(new Font("Inter", Font.PLAIN, 14));
         txtJumlah.putClientProperty("JComponent.roundRect", true);
-        txtJumlah.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        txtJumlah.setMaximumSize(new Dimension(800, 40));
         txtJumlah.setPreferredSize(new Dimension(Integer.MAX_VALUE, 40));
         txtJumlah.setMargin(new Insets(5, 10, 5, 10));
         txtJumlah.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -225,14 +239,13 @@ public class FormTransaksiMasukPanel extends JPanel {
         txtTanggal = new JTextField();
         txtTanggal.setFont(new Font("Inter", Font.PLAIN, 14));
         txtTanggal.putClientProperty("JComponent.roundRect", true);
-        txtTanggal.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        txtTanggal.setMaximumSize(new Dimension(800, 40));
         txtTanggal.setPreferredSize(new Dimension(Integer.MAX_VALUE, 40));
         txtTanggal.setMargin(new Insets(5, 10, 5, 10));
-        txtTanggal.setEditable(false); // Otomatis mengikuti hari ini
+        txtTanggal.setEditable(false);
         txtTanggal.setBackground(Color.decode("#F8F9FA"));
         txtTanggal.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        // Format tanggal hari ini
         String formattedDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy", new Locale("id", "ID")));
         txtTanggal.setText(formattedDate);
         bodyPanel.add(txtTanggal);
@@ -253,7 +266,7 @@ public class FormTransaksiMasukPanel extends JPanel {
         txtKeterangan.putClientProperty("JTextField.placeholderText", "Tambahkan catatan transaksi...");
         JScrollPane ketScroll = new JScrollPane(txtKeterangan);
         ketScroll.setBorder(BorderFactory.createLineBorder(Color.decode("#CBD5E1"), 1, true));
-        ketScroll.setMaximumSize(new Dimension(Integer.MAX_VALUE, 75));
+        ketScroll.setMaximumSize(new Dimension(800, 75));
         ketScroll.setPreferredSize(new Dimension(Integer.MAX_VALUE, 75));
         ketScroll.setAlignmentX(Component.LEFT_ALIGNMENT);
         bodyPanel.add(ketScroll);
@@ -263,10 +276,10 @@ public class FormTransaksiMasukPanel extends JPanel {
         btnSimpan = new JButton("Simpan Transaksi");
         btnSimpan.setFont(new Font("Inter", Font.BOLD, 14));
         btnSimpan.setForeground(Color.WHITE);
-        btnSimpan.setBackground(Color.decode("#0D52D6")); // Tombol simpan transaksi tetap biru
+        btnSimpan.setBackground(Color.decode("#0D52D6"));
         btnSimpan.putClientProperty("JButton.buttonType", "roundRect");
         btnSimpan.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnSimpan.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
+        btnSimpan.setMaximumSize(new Dimension(800, 45));
         btnSimpan.setPreferredSize(new Dimension(Integer.MAX_VALUE, 45));
         btnSimpan.setAlignmentX(Component.LEFT_ALIGNMENT);
         btnSimpan.addActionListener(e -> simpanTransaksi());
