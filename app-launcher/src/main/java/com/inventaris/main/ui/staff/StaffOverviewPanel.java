@@ -1,6 +1,8 @@
 package com.inventaris.main.ui.staff;
 
 import com.inventaris.auth.domain.User;
+import com.inventaris.inventory.service.InventoryService;
+import com.inventaris.main.ui.components.BottomSheetOverlay;
 import com.inventaris.transaction.domain.TipeTransaksi;
 import com.inventaris.transaction.domain.Transaksi;
 import com.inventaris.transaction.service.TransactionService;
@@ -15,12 +17,17 @@ import java.util.List;
 public class StaffOverviewPanel extends JPanel {
     private final User staffUser;
     private final TransactionService transactionService;
+    private final InventoryService inventoryService;
+    private final BottomSheetOverlay bottomSheetOverlay;
 
     private JPanel historyContainer;
 
-    public StaffOverviewPanel(User staffUser, TransactionService transactionService) {
+    public StaffOverviewPanel(User staffUser, TransactionService transactionService,
+                              InventoryService inventoryService, BottomSheetOverlay bottomSheetOverlay) {
         this.staffUser = staffUser;
         this.transactionService = transactionService;
+        this.inventoryService = inventoryService;
+        this.bottomSheetOverlay = bottomSheetOverlay;
 
         initComponents();
         loadHistoryData();
@@ -46,9 +53,25 @@ public class StaffOverviewPanel extends JPanel {
         centerPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         // Action Cards (Input Barang Masuk & Keluar)
-        centerPanel.add(createActionCard("Input Barang Masuk", "Catat penerimaan stok baru", new Color(235, 245, 255), new Color(0, 102, 204), "\u21A1"));
+        JPanel cardMasuk = createActionCard("Input Barang Masuk", "Catat penerimaan stok baru", new Color(235, 245, 255), new Color(0, 102, 204), "\u21A1");
+        cardMasuk.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                bottomSheetOverlay.openSheet(new FormTransaksiMasukPanel(staffUser, inventoryService, transactionService, bottomSheetOverlay, () -> loadHistoryData()), 550);
+            }
+        });
+
+        JPanel cardKeluar = createActionCard("Input Barang Keluar", "Catat penggunaan atau pengeluaran stok", new Color(255, 240, 235), new Color(204, 51, 0), "\u219F");
+        cardKeluar.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                bottomSheetOverlay.openSheet(new FormTransaksiKeluarPanel(staffUser, inventoryService, transactionService, bottomSheetOverlay, () -> loadHistoryData()), 520);
+            }
+        });
+
+        centerPanel.add(cardMasuk);
         centerPanel.add(Box.createVerticalStrut(15));
-        centerPanel.add(createActionCard("Input Barang Keluar", "Catat penggunaan atau pengeluaran stok", new Color(255, 240, 235), new Color(204, 51, 0), "\u219F"));
+        centerPanel.add(cardKeluar);
 
         centerPanel.add(Box.createVerticalStrut(40));
 

@@ -4,6 +4,9 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.inventaris.auth.domain.User;
 import com.inventaris.auth.domain.Staff;
 import com.inventaris.inventory.repository.BarangRepository;
+import com.inventaris.inventory.repository.KategoriRepository;
+import com.inventaris.inventory.service.InventoryService;
+import com.inventaris.main.ui.components.BottomSheetOverlay;
 import com.inventaris.transaction.repository.TransaksiRepository;
 import com.inventaris.transaction.service.TransactionService;
 import com.inventaris.main.ui.staff.StaffOverviewPanel;
@@ -16,6 +19,7 @@ import java.awt.*;
 public class DashboardStaff extends JFrame {
     private final User staffUser;
     private final TransactionService transactionService;
+    private final InventoryService inventoryService;
 
     private CardLayout cardLayout;
     private JPanel cardPanel;
@@ -27,11 +31,23 @@ public class DashboardStaff extends JFrame {
     private StaffOverviewPanel overviewPanel;
     private KatalogBarangPanel katalogPanel;
     private JPanel topBar;
+    private BottomSheetOverlay bottomSheetOverlay;
 
     public DashboardStaff(User staffUser) {
         this.staffUser = staffUser;
         this.transactionService = new TransactionService(new TransaksiRepository(), new BarangRepository());
+        this.inventoryService = new InventoryService(new BarangRepository(), new KategoriRepository());
 
+        // Inisialisasi BottomSheetOverlay SEBELUM initComponents dipanggil
+        this.bottomSheetOverlay = new BottomSheetOverlay();
+
+        initComponents();
+
+        // Register custom GlassPane
+        setGlassPane(bottomSheetOverlay);
+    }
+
+    private void initComponents() {
         setTitle("Sistem Inventaris - Dashboard");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(420, 800);
@@ -49,7 +65,7 @@ public class DashboardStaff extends JFrame {
         cardPanel.setBackground(Color.WHITE);
 
         // Instantiate modular panels
-        this.overviewPanel = new StaffOverviewPanel(staffUser, transactionService);
+        this.overviewPanel = new StaffOverviewPanel(staffUser, transactionService, inventoryService, bottomSheetOverlay);
         this.katalogPanel = new KatalogBarangPanel();
 
         cardPanel.add(overviewPanel, "DASHBOARD");
