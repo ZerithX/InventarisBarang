@@ -316,7 +316,7 @@ public class FormTransaksiMasukPanel extends JPanel {
 
     private void loadData() {
         cbBarang.removeAllItems();
-        cbBarang.addItem("Cari atau pilih barang...");
+        cbBarang.addItem("Pilih Barang...");
         cbBarang.addItem("+ Tambah Barang Baru");
 
         try {
