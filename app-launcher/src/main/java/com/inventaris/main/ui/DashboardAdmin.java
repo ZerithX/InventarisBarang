@@ -6,6 +6,7 @@ import com.inventaris.inventory.repository.KategoriRepository;
 import com.inventaris.inventory.service.InventoryService;
 import com.inventaris.main.ui.admin.DashboardOverviewPanel;
 import com.inventaris.main.ui.admin.KelolaMasterDataPanel;
+import com.inventaris.main.ui.admin.LaporanPanel;
 import com.inventaris.main.ui.components.BottomSheetOverlay;
 import com.inventaris.transaction.repository.TransaksiRepository;
 import com.inventaris.transaction.service.TransactionService;
@@ -28,6 +29,7 @@ public class DashboardAdmin extends JFrame {
     // Modular Views
     private DashboardOverviewPanel overviewPanel;
     private KelolaMasterDataPanel kelolaPanel;
+    private LaporanPanel laporanPanel;
 
     // Shared Bottom Sheet Overlay
     private BottomSheetOverlay bottomSheetOverlay;
@@ -36,10 +38,13 @@ public class DashboardAdmin extends JFrame {
         this.inventoryService = new InventoryService(new BarangRepository(), new KategoriRepository());
         this.transactionService = new TransactionService(new TransaksiRepository(), new BarangRepository());
 
+        // Inisialisasi BottomSheetOverlay SEBELUM initComponents dipanggil
+        // agar objek panel (seperti KelolaMasterDataPanel) tidak menerima referensi null
+        this.bottomSheetOverlay = new BottomSheetOverlay();
+
         initComponents();
 
-        // Register custom GlassPane for Bottom Sheet Overlay
-        this.bottomSheetOverlay = new BottomSheetOverlay();
+        // Daftarkan sebagai GlassPane JFrame
         setGlassPane(bottomSheetOverlay);
     }
 
@@ -58,11 +63,15 @@ public class DashboardAdmin extends JFrame {
 
         // Instantiate modular panels
         this.overviewPanel = new DashboardOverviewPanel(inventoryService, transactionService);
+        this.laporanPanel = new LaporanPanel(inventoryService);
         
         // Define callback to refresh dashboard data when kelola panel updates database
         Runnable globalRefreshCallback = () -> {
             if (overviewPanel != null) {
                 overviewPanel.loadDashboardData();
+            }
+            if (laporanPanel != null) {
+                laporanPanel.loadLaporanData();
             }
         };
         
@@ -72,6 +81,7 @@ public class DashboardAdmin extends JFrame {
         // Add modular panels to card layout
         cardPanel.add(wrapInMainLayout(overviewPanel, "Sistem Inventaris"), "DASHBOARD");
         cardPanel.add(kelolaPanel, "KELOLA_DATA");
+        cardPanel.add(laporanPanel, "LAPORAN");
 
         add(cardPanel, BorderLayout.CENTER);
 
@@ -99,6 +109,13 @@ public class DashboardAdmin extends JFrame {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 switchTab("KELOLA_DATA");
+            }
+        });
+
+        btnLaporan.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                switchTab("LAPORAN");
             }
         });
 
@@ -189,9 +206,14 @@ public class DashboardAdmin extends JFrame {
         cardLayout.show(cardPanel, tabName);
         updateNavButtonState(btnDashboard, "■", "Dashboard", "DASHBOARD".equals(tabName));
         updateNavButtonState(btnKelola, "□", "Kelola Data", "KELOLA_DATA".equals(tabName));
+        updateNavButtonState(btnLaporan, "📈", "Laporan", "LAPORAN".equals(tabName));
         if ("KELOLA_DATA".equals(tabName)) {
             if (kelolaPanel != null) {
                 kelolaPanel.switchSubTab(true);
+            }
+        } else if ("LAPORAN".equals(tabName)) {
+            if (laporanPanel != null) {
+                laporanPanel.loadLaporanData();
             }
         }
     }

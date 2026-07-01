@@ -125,6 +125,13 @@ public class KatalogBarangPanel extends JPanel {
         if (pillsPanel == null || catalogItemsPanel == null) return;
         loadCategoryPills();
         loadCatalogItems();
+        
+        // Reset scrollbar ke atas (0) setelah data diperbarui untuk mencegah pergeseran/scroll otomatis
+        SwingUtilities.invokeLater(() -> {
+            if (katalogScrollPane != null) {
+                katalogScrollPane.getVerticalScrollBar().setValue(0);
+            }
+        });
     }
 
     private void loadCategoryPills() {

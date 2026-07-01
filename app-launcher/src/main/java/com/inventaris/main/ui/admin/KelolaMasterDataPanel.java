@@ -45,6 +45,19 @@ public class KelolaMasterDataPanel extends JPanel {
         contentContainer.setLayout(new BorderLayout());
         contentContainer.setBackground(Color.decode("#F8F9FB"));
 
+        // Header Bar (Title)
+        JPanel headerBar = new JPanel(new BorderLayout());
+        headerBar.setBackground(Color.WHITE);
+        headerBar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#EBEBEB")),
+                new EmptyBorder(12, 15, 12, 15)
+        ));
+
+        JLabel titleLabel = new JLabel("Kelola Master Data", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Newsreader", Font.BOLD, 22));
+        titleLabel.setForeground(Color.DARK_GRAY);
+        headerBar.add(titleLabel, BorderLayout.CENTER);
+
         // Sub-Tab Header
         JPanel subTabHeader = new JPanel(new GridLayout(1, 2));
         subTabHeader.setBackground(Color.WHITE);
@@ -69,7 +82,15 @@ public class KelolaMasterDataPanel extends JPanel {
 
         subTabHeader.add(tabBarangBtn);
         subTabHeader.add(tabKategoriBtn);
-        contentContainer.add(subTabHeader, BorderLayout.NORTH);
+
+        // Top Wrapper (Header Bar + Sub-Tab Header)
+        JPanel topWrapper = new JPanel();
+        topWrapper.setLayout(new BoxLayout(topWrapper, BoxLayout.Y_AXIS));
+        topWrapper.setBackground(Color.WHITE);
+        topWrapper.add(headerBar);
+        topWrapper.add(subTabHeader);
+
+        contentContainer.add(topWrapper, BorderLayout.NORTH);
 
         // Inner Scroll Container
         JPanel innerContainer = new JPanel() {
