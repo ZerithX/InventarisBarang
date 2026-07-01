@@ -26,6 +26,7 @@ public class DashboardStaff extends JFrame {
     // Modular components
     private StaffOverviewPanel overviewPanel;
     private KatalogBarangPanel katalogPanel;
+    private JPanel topBar;
 
     public DashboardStaff(User staffUser) {
         this.staffUser = staffUser;
@@ -54,7 +55,8 @@ public class DashboardStaff extends JFrame {
         cardPanel.add(overviewPanel, "DASHBOARD");
         cardPanel.add(katalogPanel, "KATALOG");
 
-        mainContainer.add(createTopBar(), BorderLayout.NORTH);
+        this.topBar = createTopBar();
+        mainContainer.add(topBar, BorderLayout.NORTH);
         mainContainer.add(cardPanel, BorderLayout.CENTER);
         mainContainer.add(createBottomNav(), BorderLayout.SOUTH);
     }
@@ -130,12 +132,20 @@ public class DashboardStaff extends JFrame {
         cardLayout.show(cardPanel, tabName);
         updateNavItemState(btnDashboard, "Dashboard", "\u25A6", "DASHBOARD".equals(tabName));
         updateNavItemState(btnBarang, "Barang", "\u25A4", "KATALOG".equals(tabName));
+        
+        // Sembunyikan topBar ketika di tab barang (KATALOG), tampilkan di tab lainnya
+        if (topBar != null) {
+            topBar.setVisible(!"KATALOG".equals(tabName));
+        }
+
         if ("KATALOG".equals(tabName)) {
             if (katalogPanel != null) {
                 katalogPanel.refreshKatalog();
                 katalogPanel.resetScroll();
             }
         }
+        revalidate();
+        repaint();
     }
 
     private void updateNavItemState(JPanel item, String text, String iconStr, boolean isActive) {
