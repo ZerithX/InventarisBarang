@@ -75,4 +75,12 @@ public class InventoryService {
     public void updateKategori(Kategori k) throws SQLException {
         kategoriRepository.update(k);
     }
+
+    public void deleteBarang(String id) throws SQLException {
+        barangRepository.delete(id);
+    }
+
+    public void deleteKategori(String id) throws SQLException {
+        kategoriRepository.delete(id);
+    }
 }
