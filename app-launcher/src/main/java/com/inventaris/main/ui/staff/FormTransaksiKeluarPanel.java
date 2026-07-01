@@ -237,7 +237,6 @@ public class FormTransaksiKeluarPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(bodyPanel);
         scrollPane.setBorder(null);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         add(headerPanel, BorderLayout.NORTH);

@@ -41,6 +41,9 @@ public class FormTransaksiMasukPanel extends JPanel {
     private JTextArea txtKeterangan;
     private JButton btnSimpan;
 
+    private JPanel bodyPanel;
+    private JScrollPane scrollPane;
+
     private List<Barang> barangList = new ArrayList<>();
     private List<Kategori> kategoriList = new ArrayList<>();
 
@@ -83,7 +86,7 @@ public class FormTransaksiMasukPanel extends JPanel {
         headerPanel.add(lblTitle);
 
         // Form Body Panel inside JScrollPane to handle new item fields expansion
-        JPanel bodyPanel = new JPanel() {
+        this.bodyPanel = new JPanel() {
             @Override
             public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();
@@ -285,10 +288,9 @@ public class FormTransaksiMasukPanel extends JPanel {
         btnSimpan.addActionListener(e -> simpanTransaksi());
         bodyPanel.add(btnSimpan);
 
-        JScrollPane scrollPane = new JScrollPane(bodyPanel);
+        this.scrollPane = new JScrollPane(bodyPanel);
         scrollPane.setBorder(null);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         add(headerPanel, BorderLayout.NORTH);
@@ -336,9 +338,28 @@ public class FormTransaksiMasukPanel extends JPanel {
             lblStokSaatIni.setText(b.getStok() + " Unit");
         }
 
-        // Revalidate layout to redraw and size container
+        // Revalidate dan repaint bodyPanel terlebih dahulu agar scroll pane mengetahui perubahan ukuran konten
+        if (bodyPanel != null) {
+            bodyPanel.revalidate();
+            bodyPanel.repaint();
+        }
+
+        if (scrollPane != null) {
+            scrollPane.revalidate();
+            scrollPane.repaint();
+        }
+
         revalidate();
         repaint();
+
+        // Otomatis scroll ke bawah jika memilih barang baru agar form input langsung terlihat
+        if (idx == 1) {
+            SwingUtilities.invokeLater(() -> {
+                if (scrollPane != null) {
+                    scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+                }
+            });
+        }
     }
 
     private void simpanTransaksi() {
