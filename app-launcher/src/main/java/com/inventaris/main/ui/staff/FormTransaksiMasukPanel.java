@@ -8,6 +8,7 @@ import com.inventaris.transaction.domain.BarangMasuk;
 import com.inventaris.transaction.domain.TipeTransaksi;
 import com.inventaris.transaction.service.TransactionService;
 import com.inventaris.main.ui.components.BottomSheetOverlay;
+import com.inventaris.main.ui.components.ConfirmDialogs;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -368,15 +369,6 @@ public class FormTransaksiMasukPanel extends JPanel {
 
         revalidate();
         repaint();
-
-        // Otomatis scroll ke bawah jika memilih barang baru agar form input langsung terlihat
-        if (idx == 1) {
-            SwingUtilities.invokeLater(() -> {
-                if (scrollPane != null) {
-                    scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
-                }
-            });
-        }
     }
 
     private void simpanTransaksi() {
@@ -400,8 +392,6 @@ public class FormTransaksiMasukPanel extends JPanel {
         }
         txtJumlah.putClientProperty("JComponent.outline", null);
 
-        Barang targetBarang;
-
         if (selectionIndex == 1) {
             // Validasi Input Barang Baru
             String namaBaru = txtNamaBarangBaru.getText().trim();
@@ -419,7 +409,29 @@ public class FormTransaksiMasukPanel extends JPanel {
                 return;
             }
             cbKategoriBaru.putClientProperty("JComponent.outline", null);
+        }
 
+        // Tampilkan Popup Konfirmasi Simpan Transaksi
+        JPanel confirmPanel = ConfirmDialogs.createSaveConfirmationDialog(
+            "Simpan Transaksi",
+            "Apakah Anda yakin data transaksi sudah sesuai?",
+            () -> {
+                bottomSheetOverlay.closeDialog();
+                prosesSimpanTransaksi(selectionIndex, jumlah);
+            },
+            () -> {
+                bottomSheetOverlay.closeDialog();
+            }
+        );
+        bottomSheetOverlay.openDialog(confirmPanel, 340, 180);
+    }
+
+    private void prosesSimpanTransaksi(int selectionIndex, int jumlah) {
+        Barang targetBarang;
+
+        if (selectionIndex == 1) {
+            String namaBaru = txtNamaBarangBaru.getText().trim();
+            int katIdx = cbKategoriBaru.getSelectedIndex();
             Kategori targetKategori = kategoriList.get(katIdx - 1);
             String deskripsiBaru = txtDeskripsiBaru.getText().trim();
 
@@ -443,7 +455,6 @@ public class FormTransaksiMasukPanel extends JPanel {
 
         try {
             transactionService.executeTransaction(transaksi);
-            JOptionPane.showMessageDialog(this, "Transaksi barang masuk berhasil disimpan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
             
             if (refreshCallback != null) {
                 refreshCallback.run();

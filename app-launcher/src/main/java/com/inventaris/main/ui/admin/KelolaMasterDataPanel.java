@@ -377,6 +377,31 @@ public class KelolaMasterDataPanel extends JPanel {
         lblDelete.setForeground(Color.decode("#C83214"));
         lblDelete.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+        lblDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                JPanel confirmPanel = com.inventaris.main.ui.components.ConfirmDialogs.createDeleteConfirmationDialog(
+                    "Hapus Data",
+                    "Apakah Anda yakin ingin menghapus data ini secara permanen? Tindakan ini tidak dapat dibatalkan.",
+                    () -> {
+                        bottomSheetOverlay.closeDialog();
+                        try {
+                            inventoryService.deleteBarang(b.getId());
+                            JOptionPane.showMessageDialog(KelolaMasterDataPanel.this, "Data barang berhasil dihapus!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                            formRefreshCallback.run();
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                            JOptionPane.showMessageDialog(KelolaMasterDataPanel.this, "Gagal menghapus barang: " + ex.getMessage(), "Error Database", JOptionPane.ERROR_MESSAGE);
+                        }
+                    },
+                    () -> {
+                        bottomSheetOverlay.closeDialog();
+                    }
+                );
+                bottomSheetOverlay.openDialog(confirmPanel, 320, 320);
+            }
+        });
+
         actionsPanel.add(lblEdit);
         actionsPanel.add(lblDelete);
         topRow.add(actionsPanel, BorderLayout.EAST);
@@ -444,6 +469,31 @@ public class KelolaMasterDataPanel extends JPanel {
         lblDelete.setFont(new Font("Inter", Font.PLAIN, 16));
         lblDelete.setForeground(Color.decode("#C83214"));
         lblDelete.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        lblDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                JPanel confirmPanel = com.inventaris.main.ui.components.ConfirmDialogs.createDeleteConfirmationDialog(
+                    "Hapus Data",
+                    "Apakah Anda yakin ingin menghapus data ini secara permanen? Tindakan ini tidak dapat dibatalkan.",
+                    () -> {
+                        bottomSheetOverlay.closeDialog();
+                        try {
+                            inventoryService.deleteKategori(kat.getId());
+                            JOptionPane.showMessageDialog(KelolaMasterDataPanel.this, "Data kategori berhasil dihapus!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                            formRefreshCallback.run();
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                            JOptionPane.showMessageDialog(KelolaMasterDataPanel.this, "Gagal menghapus kategori. Pastikan tidak ada barang yang menggunakan kategori ini!", "Error Database", JOptionPane.ERROR_MESSAGE);
+                        }
+                    },
+                    () -> {
+                        bottomSheetOverlay.closeDialog();
+                    }
+                );
+                bottomSheetOverlay.openDialog(confirmPanel, 320, 320);
+            }
+        });
 
         actionsPanel.add(lblEdit);
         actionsPanel.add(lblDelete);

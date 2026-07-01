@@ -6,6 +6,7 @@ import com.inventaris.inventory.service.InventoryService;
 import com.inventaris.transaction.domain.BarangKeluar;
 import com.inventaris.transaction.service.TransactionService;
 import com.inventaris.main.ui.components.BottomSheetOverlay;
+import com.inventaris.main.ui.components.ConfirmDialogs;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -338,13 +339,28 @@ public class FormTransaksiKeluarPanel extends JPanel {
             return;
         }
 
+        // Tampilkan Popup Konfirmasi Simpan Transaksi
+        JPanel confirmPanel = ConfirmDialogs.createSaveConfirmationDialog(
+            "Simpan Transaksi",
+            "Apakah Anda yakin data transaksi sudah sesuai?",
+            () -> {
+                bottomSheetOverlay.closeDialog();
+                prosesSimpanTransaksi(selectionIndex, jumlah);
+            },
+            () -> {
+                bottomSheetOverlay.closeDialog();
+            }
+        );
+        bottomSheetOverlay.openDialog(confirmPanel, 340, 180);
+    }
+
+    private void prosesSimpanTransaksi(int selectionIndex, int jumlah) {
         Barang targetBarang = barangList.get(selectionIndex - 1);
         String keteranganText = txtKeterangan.getText().trim();
         BarangKeluar transaksi = new BarangKeluar(targetBarang, jumlah, staffUser, keteranganText);
 
         try {
             transactionService.executeTransaction(transaksi);
-            JOptionPane.showMessageDialog(this, "Transaksi barang keluar berhasil disimpan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
             
             if (refreshCallback != null) {
                 refreshCallback.run();

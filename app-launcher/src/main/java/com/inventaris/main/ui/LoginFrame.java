@@ -115,8 +115,6 @@ public class LoginFrame extends JFrame {
                     "Sukses",
                     JOptionPane.INFORMATION_MESSAGE);
 
-            // Polymorphic call - compiler hanya tahu objek ini adalah User,
-            // namun runtime JVM akan mengeksekusi override method sesuai tipe riil subclass (Admin/Staff)
             user.tampilkanMenu();
 
             this.dispose();

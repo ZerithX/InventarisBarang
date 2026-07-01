@@ -14,20 +14,22 @@ import java.awt.event.MouseEvent;
  */
 public class BottomSheetOverlay extends JPanel {
     private JPanel sheetPanel;
+    private JPanel dialogPanel;
     private int sheetHeight = 480;
     private float alpha = 0f;
     private Timer timer;
     private int currentY;
+    private boolean isDialogMode = false;
 
     public BottomSheetOverlay() {
         setLayout(null);
         setOpaque(false);
 
-        // Close sheet when clicking outside the panel
+        // Close sheet when clicking outside the panel (only in bottom sheet mode)
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (sheetPanel != null) {
+                if (!isDialogMode && sheetPanel != null) {
                     Point p = e.getPoint();
                     if (!sheetPanel.getBounds().contains(p)) {
                         closeSheet();
@@ -48,7 +50,8 @@ public class BottomSheetOverlay extends JPanel {
     }
 
     public void openSheet(JPanel contentForm, int height) {
-        this.sheetHeight = height;
+        this.isDialogMode = false;
+        this.dialogPanel = null;
         removeAll();
 
         // Bottom sheet panel container
@@ -116,6 +119,11 @@ public class BottomSheetOverlay extends JPanel {
     }
 
     public void closeSheet() {
+        if (sheetPanel == null) {
+            setVisible(false);
+            return;
+        }
+
         if (timer != null && timer.isRunning()) {
             timer.stop();
         }
@@ -129,11 +137,92 @@ public class BottomSheetOverlay extends JPanel {
                     if (currentY > targetY) currentY = targetY;
                     alpha = 1.0f - (float) (currentY - (getHeight() - sheetHeight)) / sheetHeight;
                     if (alpha < 0) alpha = 0;
-                    sheetPanel.setBounds(0, currentY, getWidth(), sheetHeight);
+                    if (sheetPanel != null) {
+                        sheetPanel.setBounds(0, currentY, getWidth(), sheetHeight);
+                    }
                     repaint();
                 } else {
                     timer.stop();
                     setVisible(false);
+                }
+            }
+        });
+        timer.start();
+    }
+
+    public void openDialog(JPanel dialogContent, int width, int height) {
+        this.isDialogMode = true;
+        this.sheetPanel = null;
+        removeAll();
+
+        // Custom centered panel container with rounded corners and drop shadow
+        dialogPanel = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(Color.WHITE);
+                int arc = 20;
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
+                g2.dispose();
+            }
+        };
+        dialogPanel.setOpaque(false);
+        dialogPanel.add(dialogContent, BorderLayout.CENTER);
+
+        add(dialogPanel);
+
+        // Center position calculation
+        int x = (getWidth() - width) / 2;
+        int y = (getHeight() - height) / 2;
+        dialogPanel.setBounds(x, y, width, height);
+
+        // Force layout pass for absolute positioning inside GlassPane
+        dialogPanel.revalidate();
+        dialogPanel.repaint();
+        revalidate();
+        repaint();
+
+        // Fade in alpha
+        alpha = 0f;
+        setVisible(true);
+
+        if (timer != null && timer.isRunning()) {
+            timer.stop();
+        }
+
+        timer = new Timer(10, new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                if (alpha < 1f) {
+                    alpha += 0.1f;
+                    if (alpha > 1f) alpha = 1f;
+                    repaint();
+                } else {
+                    timer.stop();
+                }
+            }
+        });
+        timer.start();
+    }
+
+    public void closeDialog() {
+        if (timer != null && timer.isRunning()) {
+            timer.stop();
+        }
+
+        timer = new Timer(10, new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                if (alpha > 0f) {
+                    alpha -= 0.1f;
+                    if (alpha < 0f) alpha = 0f;
+                    repaint();
+                } else {
+                    timer.stop();
+                    setVisible(false);
+                    removeAll();
                 }
             }
         });
