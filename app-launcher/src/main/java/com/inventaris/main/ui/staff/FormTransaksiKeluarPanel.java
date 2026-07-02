@@ -362,6 +362,15 @@ public class FormTransaksiKeluarPanel extends JPanel {
         try {
             transactionService.executeTransaction(transaksi);
             
+            // Log aktivitas staff input barang keluar
+            com.inventaris.core.util.ActivityLogger.log(
+                staffUser.getId(),
+                staffUser.getName(),
+                "STAFF",
+                "TRANSAKSI_KELUAR",
+                "Menginput transaksi barang keluar: " + targetBarang.getNama() + " sejumlah " + jumlah + " unit. Keterangan: " + keteranganText
+            );
+
             if (refreshCallback != null) {
                 refreshCallback.run();
             }

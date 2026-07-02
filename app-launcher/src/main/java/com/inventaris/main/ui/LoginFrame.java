@@ -110,6 +110,17 @@ public class LoginFrame extends JFrame {
 
         try {
             User user = authService.login(username, password);
+            com.inventaris.auth.domain.Session.setLoggedInUser(user);
+            
+            // Log login activity
+            com.inventaris.core.util.ActivityLogger.log(
+                user.getId(),
+                user.getName(),
+                user.getRole().toString(),
+                "LOGIN",
+                "User " + user.getName() + " berhasil login dengan role " + user.getRole()
+            );
+
             JOptionPane.showMessageDialog(this,
                     "Login Berhasil!\nSelamat datang, " + user.getName() + " (" + user.getRole() + ")",
                     "Sukses",
