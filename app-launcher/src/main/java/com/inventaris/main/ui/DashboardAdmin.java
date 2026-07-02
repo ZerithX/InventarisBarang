@@ -156,6 +156,17 @@ public class DashboardAdmin extends JFrame {
         lblLogout.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
+                com.inventaris.auth.domain.User currentUser = com.inventaris.auth.domain.Session.getLoggedInUser();
+                if (currentUser != null) {
+                    com.inventaris.core.util.ActivityLogger.log(
+                        currentUser.getId(),
+                        currentUser.getName(),
+                        currentUser.getRole().toString(),
+                        "LOGOUT",
+                        "User " + currentUser.getName() + " berhasil logout"
+                    );
+                }
+                com.inventaris.auth.domain.Session.clear();
                 new LoginFrame().setVisible(true);
                 dispose();
             }

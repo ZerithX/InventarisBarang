@@ -50,6 +50,7 @@ public class BottomSheetOverlay extends JPanel {
     }
 
     public void openSheet(JPanel contentForm, int height) {
+        this.sheetHeight = height;
         this.isDialogMode = false;
         this.dialogPanel = null;
         removeAll();
