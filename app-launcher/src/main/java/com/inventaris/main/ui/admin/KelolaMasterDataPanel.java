@@ -332,6 +332,7 @@ public class KelolaMasterDataPanel extends JPanel {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Gagal memuat master data: " + e.getMessage(), "Error Database", JOptionPane.ERROR_MESSAGE);
         }
 
         kelolaItemsPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, kelolaItemsPanel.getPreferredSize().height));

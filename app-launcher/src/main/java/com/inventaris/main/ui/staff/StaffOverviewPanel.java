@@ -132,6 +132,7 @@ public class StaffOverviewPanel extends JPanel {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Gagal memuat riwayat transaksi: " + e.getMessage(), "Error Database", JOptionPane.ERROR_MESSAGE);
             JLabel lblError = new JLabel("Gagal memuat riwayat transaksi.");
             lblError.setFont(new Font("Inter", Font.ITALIC, 14));
             lblError.setForeground(Color.RED);
