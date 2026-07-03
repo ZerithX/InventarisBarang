@@ -4,6 +4,7 @@ import com.inventaris.inventory.domain.Kategori;
 import com.inventaris.inventory.service.InventoryService;
 import com.inventaris.report.domain.LaporanItem;
 import com.inventaris.report.service.ReportService;
+import com.inventaris.report.service.PDFReportGenerator;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -91,10 +92,78 @@ public class LaporanPanel extends JPanel {
         ));
 
         btnCetak.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this,
-                    "Fitur ekspor PDF dilewati untuk saat ini.",
-                    "Informasi",
-                    JOptionPane.INFORMATION_MESSAGE);
+            // Tentukan kategori ID yang dipilih dan nama kategori untuk judul laporan
+            String targetKategoriId = "ALL";
+            String targetKategoriNama = "Semua Kategori";
+            int selectedIndex = cbKategori.getSelectedIndex();
+            if (selectedIndex > 0 && selectedIndex - 1 < kategoriList.size()) {
+                targetKategoriId = kategoriList.get(selectedIndex - 1).getId();
+                targetKategoriNama = kategoriList.get(selectedIndex - 1).getNama();
+            }
+
+            try {
+                // Ambil data laporan ter-update dari database
+                List<LaporanItem> items = reportService.getLaporanPerkembanganStok(targetKategoriId, currentYear, currentMonth);
+                
+                if (items.isEmpty()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Tidak ada data laporan untuk dicetak.",
+                            "Peringatan",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                // Format nama bulan
+                String namaBulanLaporan = java.time.Month.of(currentMonth).getDisplayName(TextStyle.FULL, new Locale("id", "ID"));
+                String periodeText = namaBulanLaporan + " " + currentYear;
+
+                // Tampilkan JFileChooser untuk memilih lokasi download
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Pilih Lokasi Simpan PDF");
+                
+                // Set default file name
+                String defaultFileName = "Laporan_Stok_" + targetKategoriNama.replace(" ", "_") + "_" + namaBulanLaporan + "_" + currentYear + ".pdf";
+                fileChooser.setSelectedFile(new java.io.File(defaultFileName));
+                
+                // Tambahkan filter file pdf saja
+                fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PDF Document (*.pdf)", "pdf"));
+
+                int userSelection = fileChooser.showSaveDialog(this);
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    java.io.File fileToSave = fileChooser.getSelectedFile();
+                    // Pastikan ekstensi .pdf tersemat
+                    String filePath = fileToSave.getAbsolutePath();
+                    if (!filePath.toLowerCase().endsWith(".pdf")) {
+                        fileToSave = new java.io.File(filePath + ".pdf");
+                    }
+
+                    // Tampilkan loading cursor
+                    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+                    // Panggil helper generator PDF
+                    PDFReportGenerator.generateStokReport(
+                            items, 
+                            periodeText, 
+                            targetKategoriNama, 
+                            fileToSave
+                    );
+
+                    // Kembalikan cursor normal
+                    setCursor(Cursor.getDefaultCursor());
+
+                    JOptionPane.showMessageDialog(this,
+                            "Laporan berhasil disimpan di:\n" + fileToSave.getAbsolutePath(),
+                            "Sukses Cetak PDF",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+            } catch (Exception ex) {
+                setCursor(Cursor.getDefaultCursor());
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this,
+                        "Gagal membuat laporan PDF: " + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         headerPanel.add(titlePanel, BorderLayout.WEST);

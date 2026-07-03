@@ -47,6 +47,18 @@ CREATE TABLE IF NOT EXISTS `transaksi` (
     CONSTRAINT `fk_transaksi_users` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- Table structure for table `aktivitas_log`
+CREATE TABLE IF NOT EXISTS `aktivitas_log` (
+    `id` varchar(36) NOT NULL,
+    `id_user` varchar(36) NOT NULL,
+    `username` varchar(255) NOT NULL,
+    `role` varchar(50) NOT NULL,
+    `aktivitas` varchar(255) NOT NULL,
+    `detail` text DEFAULT NULL,
+    `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 -- Dumping data for table `users`
 INSERT INTO `users` (`id`, `name`, `password`, `role`) VALUES
 ('9a6fb44a-6fe6-11f1-aefe-2c1b3ae3ac30', 'admin', 'admin123', 'ADMIN'),

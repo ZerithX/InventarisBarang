@@ -5,6 +5,9 @@ import com.inventaris.inventory.domain.Barang;
 import com.inventaris.inventory.domain.Kategori;
 import com.inventaris.inventory.service.InventoryService;
 import com.inventaris.main.ui.components.BottomSheetOverlay;
+import com.inventaris.auth.domain.Session;
+import com.inventaris.auth.domain.User;
+import com.inventaris.core.util.ActivityLogger;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -191,7 +194,7 @@ public class KelolaMasterDataPanel extends JPanel {
                 if (isBarangTabActive) {
                     bottomSheetOverlay.openSheet(new FormBarangPanel(null, inventoryService, bottomSheetOverlay, formRefreshCallback), 520);
                 } else {
-                    bottomSheetOverlay.openSheet(new FormKategoriPanel(null, inventoryService, bottomSheetOverlay, formRefreshCallback), 280);
+                    bottomSheetOverlay.openSheet(new FormKategoriPanel(null, inventoryService, bottomSheetOverlay, formRefreshCallback), 250);
                 }
             }
         });
@@ -387,6 +390,20 @@ public class KelolaMasterDataPanel extends JPanel {
                         bottomSheetOverlay.closeDialog();
                         try {
                             inventoryService.deleteBarang(b.getId());
+                            
+                            // Log hapus barang
+                            User admin = Session.getLoggedInUser();
+                            String adminId = admin != null ? admin.getId() : "SYSTEM";
+                            String adminName = admin != null ? admin.getName() : "SYSTEM";
+                            String adminRole = admin != null ? admin.getRole().toString() : "ADMIN";
+                            ActivityLogger.log(
+                                adminId,
+                                adminName,
+                                adminRole,
+                                "HAPUS_BARANG",
+                                "Menghapus barang: " + b.getNama() + " (ID: " + b.getId() + ")"
+                            );
+
                             JOptionPane.showMessageDialog(KelolaMasterDataPanel.this, "Data barang berhasil dihapus!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
                             formRefreshCallback.run();
                         } catch (SQLException ex) {
@@ -461,7 +478,7 @@ public class KelolaMasterDataPanel extends JPanel {
         lblEdit.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                bottomSheetOverlay.openSheet(new FormKategoriPanel(kat, inventoryService, bottomSheetOverlay, formRefreshCallback), 280);
+                bottomSheetOverlay.openSheet(new FormKategoriPanel(kat, inventoryService, bottomSheetOverlay, formRefreshCallback), 250);
             }
         });
 
@@ -480,6 +497,20 @@ public class KelolaMasterDataPanel extends JPanel {
                         bottomSheetOverlay.closeDialog();
                         try {
                             inventoryService.deleteKategori(kat.getId());
+                            
+                            // Log hapus kategori
+                            User admin = Session.getLoggedInUser();
+                            String adminId = admin != null ? admin.getId() : "SYSTEM";
+                            String adminName = admin != null ? admin.getName() : "SYSTEM";
+                            String adminRole = admin != null ? admin.getRole().toString() : "ADMIN";
+                            ActivityLogger.log(
+                                adminId,
+                                adminName,
+                                adminRole,
+                                "HAPUS_KATEGORI",
+                                "Menghapus kategori: " + kat.getNama() + " (ID: " + kat.getId() + ")"
+                            );
+
                             JOptionPane.showMessageDialog(KelolaMasterDataPanel.this, "Data kategori berhasil dihapus!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
                             formRefreshCallback.run();
                         } catch (SQLException ex) {
