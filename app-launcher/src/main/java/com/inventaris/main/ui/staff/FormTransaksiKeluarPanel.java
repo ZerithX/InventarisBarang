@@ -377,8 +377,16 @@ public class FormTransaksiKeluarPanel extends JPanel {
             bottomSheetOverlay.closeSheet();
         } catch (Exception e) {
             e.printStackTrace();
-            if (e instanceof java.sql.SQLIntegrityConstraintViolationException || 
-               (e.getMessage() != null && e.getMessage().toLowerCase().contains("foreign key"))) {
+            boolean isDeleted = false;
+            try {
+                java.util.Optional<com.inventaris.inventory.domain.Barang> checkB = 
+                    new com.inventaris.inventory.repository.BarangRepository().findById(targetBarang.getId());
+                if (checkB.isEmpty()) {
+                    isDeleted = true;
+                }
+            } catch (Exception ignored) {}
+
+            if (isDeleted) {
                 show404Error();
             } else {
                 JOptionPane.showMessageDialog(this, "Gagal menyimpan transaksi: " + e.getMessage(), "Error Transaksi", JOptionPane.ERROR_MESSAGE);
