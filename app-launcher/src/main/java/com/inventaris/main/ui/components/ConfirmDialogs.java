@@ -182,4 +182,62 @@ public class ConfirmDialogs {
 
         return dialog;
     }
+
+    /**
+     * Create 404 Not Found dialog content panel for deleted items race condition.
+     */
+    public static JPanel createNotFoundErrorDialog(Runnable onReload) {
+        JPanel dialog = new JPanel(new BorderLayout());
+        dialog.setOpaque(false);
+        dialog.setBorder(new EmptyBorder(25, 25, 20, 25));
+
+        // Center panel
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setOpaque(false);
+        contentPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // 1. "404" Text (using Liberation Serif)
+        JLabel lblCode = new JLabel("404");
+        lblCode.setFont(new Font("Liberation Serif", Font.BOLD, 48));
+        lblCode.setForeground(Color.decode("#F59E0B")); // Amber color for 404
+        lblCode.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // 2. Title
+        JLabel lblTitle = new JLabel("Barang Tidak Ditemukan");
+        lblTitle.setFont(new Font("Inter", Font.BOLD, 17));
+        lblTitle.setForeground(Color.decode("#111827"));
+        lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        contentPanel.add(lblCode);
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        contentPanel.add(lblTitle);
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        // 3. Desc
+        JLabel lblDesc = new JLabel("<html><center style='width: 250px; font-family: Inter; font-size: 13px; color: #4B5563;'>Barang yang Anda pilih sudah tidak terdaftar (mungkin telah dihapus Admin). Silakan muat ulang data.</center></html>");
+        lblDesc.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(lblDesc);
+
+        dialog.add(contentPanel, BorderLayout.CENTER);
+
+        // Footer
+        JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        footerPanel.setOpaque(false);
+        footerPanel.setBorder(new EmptyBorder(15, 0, 0, 0));
+
+        JButton btnReload = new JButton("TUTUP & MUAT ULANG");
+        btnReload.setFont(new Font("Inter", Font.BOLD, 12));
+        btnReload.setForeground(Color.WHITE);
+        btnReload.setBackground(Color.decode("#003EA8"));
+        btnReload.putClientProperty("JButton.buttonType", "roundRect");
+        btnReload.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnReload.setPreferredSize(new Dimension(170, 36));
+        btnReload.addActionListener(e -> onReload.run());
+
+        footerPanel.add(btnReload);
+        dialog.add(footerPanel, BorderLayout.SOUTH);
+
+        return dialog;
+    }
 }

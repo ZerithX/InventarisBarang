@@ -415,7 +415,6 @@ public class FormTransaksiMasukPanel extends JPanel {
             }
             bottomSheetOverlay.closeSheet();
         } catch (Exception e) {
-            e.printStackTrace();
             boolean isDeleted = false;
             try {
                 java.util.Optional<com.inventaris.inventory.domain.Barang> checkB = 
@@ -426,18 +425,23 @@ public class FormTransaksiMasukPanel extends JPanel {
             } catch (Exception ignored) {}
 
             if (isDeleted) {
+                System.err.println("[404] Barang tidak ditemukan di DB saat transaksi: id=" + targetBarang.getId() + " | " + e.getMessage());
                 show404Error();
             } else {
+                e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Gagal menyimpan transaksi: " + e.getMessage(), "Error Transaksi", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
     private void show404Error() {
-        removeAll();
-        setLayout(new BorderLayout());
-        add(new com.inventaris.main.ui.components.NotFoundErrorPanel(bottomSheetOverlay, refreshCallback), BorderLayout.CENTER);
-        revalidate();
-        repaint();
+        bottomSheetOverlay.openDialog(
+            com.inventaris.main.ui.components.ConfirmDialogs.createNotFoundErrorDialog(() -> {
+                bottomSheetOverlay.closeDialog();
+                if (refreshCallback != null) {
+                    refreshCallback.run();
+                }
+            }), 340, 240
+        );
     }
 }
