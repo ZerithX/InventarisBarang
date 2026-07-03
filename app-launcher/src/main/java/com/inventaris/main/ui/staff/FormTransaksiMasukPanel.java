@@ -416,7 +416,20 @@ public class FormTransaksiMasukPanel extends JPanel {
             bottomSheetOverlay.closeSheet();
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Gagal menyimpan transaksi: " + e.getMessage(), "Error Transaksi", JOptionPane.ERROR_MESSAGE);
+            if (e instanceof java.sql.SQLIntegrityConstraintViolationException || 
+               (e.getMessage() != null && e.getMessage().toLowerCase().contains("foreign key"))) {
+                show404Error();
+            } else {
+                JOptionPane.showMessageDialog(this, "Gagal menyimpan transaksi: " + e.getMessage(), "Error Transaksi", JOptionPane.ERROR_MESSAGE);
+            }
         }
+    }
+
+    private void show404Error() {
+        removeAll();
+        setLayout(new BorderLayout());
+        add(new com.inventaris.main.ui.components.NotFoundErrorPanel(bottomSheetOverlay, refreshCallback), BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }
 }
