@@ -402,7 +402,7 @@ public class FormTransaksiKeluarPanel extends JPanel {
                 if (refreshCallback != null) {
                     refreshCallback.run();
                 }
-            }), 340, 240
+            }), 340, 320
         );
     }
 }

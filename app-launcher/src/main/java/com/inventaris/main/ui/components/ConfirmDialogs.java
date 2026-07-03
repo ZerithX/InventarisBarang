@@ -197,9 +197,29 @@ public class ConfirmDialogs {
         contentPanel.setOpaque(false);
         contentPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // 0. Icon Barang
+        JLabel lblIcon = new JLabel();
+        lblIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
+        try {
+            java.net.URL imgUrl = ConfirmDialogs.class.getResource("/com/inventaris/main/ui/icons/icon_barang.png");
+            if (imgUrl != null) {
+                ImageIcon originalIcon = new ImageIcon(imgUrl);
+                Image scaledImg = originalIcon.getImage().getScaledInstance(38, 38, Image.SCALE_SMOOTH);
+                lblIcon.setIcon(new ImageIcon(scaledImg));
+            } else {
+                lblIcon.setText("📦");
+                lblIcon.setFont(new Font("Inter", Font.PLAIN, 48));
+            }
+        } catch (Exception e) {
+            lblIcon.setText("📦");
+            lblIcon.setFont(new Font("Inter", Font.PLAIN, 48));
+        }
+        contentPanel.add(lblIcon);
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+
         // 1. "404" Text (using Liberation Serif)
         JLabel lblCode = new JLabel("404");
-        lblCode.setFont(new Font("Liberation Serif", Font.BOLD, 48));
+        lblCode.setFont(new Font("Liberation Serif", Font.BOLD, 44));
         lblCode.setForeground(Color.decode("#F59E0B")); // Amber color for 404
         lblCode.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -215,7 +235,7 @@ public class ConfirmDialogs {
         contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // 3. Desc
-        JLabel lblDesc = new JLabel("<html><center style='width: 250px; font-family: Inter; font-size: 13px; color: #4B5563;'>Barang yang Anda pilih sudah tidak terdaftar (mungkin telah dihapus Admin). Silakan muat ulang data.</center></html>");
+        JLabel lblDesc = new JLabel("<html><center style='width: 250px; font-family: Inter; font-size: 11px; color: #4B5563;'>Barang yang Anda pilih sudah tidak terdaftar (mungkin telah dihapus Admin).</center></html>");
         lblDesc.setAlignmentX(Component.CENTER_ALIGNMENT);
         contentPanel.add(lblDesc);
 

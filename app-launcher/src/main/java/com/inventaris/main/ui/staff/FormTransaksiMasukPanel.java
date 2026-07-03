@@ -441,7 +441,7 @@ public class FormTransaksiMasukPanel extends JPanel {
                 if (refreshCallback != null) {
                     refreshCallback.run();
                 }
-            }), 340, 240
+            }), 340, 320
         );
     }
 }
