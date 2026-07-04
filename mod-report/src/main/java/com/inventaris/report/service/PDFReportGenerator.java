@@ -60,7 +60,7 @@ public class PDFReportGenerator {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         Paragraph meta = new Paragraph("Dicetak pada: " + now.format(formatter), metaFont);
         meta.setAlignment(Element.ALIGN_LEFT);
-        meta.setSpacingAfter(20);
+        //meta.setSpacingAfter(20);
         document.add(meta);
 
         // Summary

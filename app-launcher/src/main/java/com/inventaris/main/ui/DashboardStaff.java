@@ -11,6 +11,7 @@ import com.inventaris.transaction.repository.TransaksiRepository;
 import com.inventaris.transaction.service.TransactionService;
 import com.inventaris.main.ui.staff.StaffOverviewPanel;
 import com.inventaris.main.ui.staff.KatalogBarangPanel;
+import com.inventaris.main.ui.staff.LaporanForbiddenPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -30,6 +31,7 @@ public class DashboardStaff extends JFrame {
     // Modular components
     private StaffOverviewPanel overviewPanel;
     private KatalogBarangPanel katalogPanel;
+    private LaporanForbiddenPanel laporanForbiddenPanel;
     private JPanel topBar;
     private BottomSheetOverlay bottomSheetOverlay;
 
@@ -67,9 +69,11 @@ public class DashboardStaff extends JFrame {
         // Instantiate modular panels
         this.overviewPanel = new StaffOverviewPanel(staffUser, transactionService, inventoryService, bottomSheetOverlay);
         this.katalogPanel = new KatalogBarangPanel();
+        this.laporanForbiddenPanel = new LaporanForbiddenPanel(() -> switchTab("DASHBOARD"));
 
         cardPanel.add(overviewPanel, "DASHBOARD");
         cardPanel.add(katalogPanel, "KATALOG");
+        cardPanel.add(laporanForbiddenPanel, "LAPORAN");
 
         this.topBar = createTopBar();
         mainContainer.add(topBar, BorderLayout.NORTH);
@@ -148,6 +152,13 @@ public class DashboardStaff extends JFrame {
             }
         });
 
+        btnLaporan.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                switchTab("LAPORAN");
+            }
+        });
+
         navBar.add(btnDashboard);
         navBar.add(btnBarang);
         navBar.add(btnLaporan);
@@ -159,10 +170,11 @@ public class DashboardStaff extends JFrame {
         cardLayout.show(cardPanel, tabName);
         updateNavItemState(btnDashboard, "Dashboard", "\u25A6", "DASHBOARD".equals(tabName));
         updateNavItemState(btnBarang, "Barang", "\u25A4", "KATALOG".equals(tabName));
+        updateNavItemState(btnLaporan, "Laporan", "\uD83D\uDCCA", "LAPORAN".equals(tabName));
         
-        // Sembunyikan topBar ketika di tab barang (KATALOG), tampilkan di tab lainnya
+        // Sembunyikan topBar ketika di tab barang (KATALOG) dan LAPORAN, tampilkan di tab lainnya
         if (topBar != null) {
-            topBar.setVisible(!"KATALOG".equals(tabName));
+            topBar.setVisible(!"KATALOG".equals(tabName) && !"LAPORAN".equals(tabName));
         }
 
         if ("KATALOG".equals(tabName)) {

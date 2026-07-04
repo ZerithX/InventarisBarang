@@ -35,5 +35,7 @@ bin/
 # Temporary screenshots
 gambar/
 
+.serena
+
 # Local file
 instruksi lokal/

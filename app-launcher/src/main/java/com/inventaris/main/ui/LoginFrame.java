@@ -9,6 +9,7 @@ import com.inventaris.auth.domain.Staff;
 import com.inventaris.auth.repository.UserRepository;
 import com.inventaris.auth.service.AuthService;
 import com.inventaris.core.exception.AuthException;
+import com.inventaris.main.ui.components.ServerErrorPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -127,14 +128,21 @@ public class LoginFrame extends JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
 
             user.tampilkanMenu();
-
             this.dispose();
 
         } catch (AuthException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Login Gagal", JOptionPane.WARNING_MESSAGE);
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Terjadi kesalahan sistem: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            // Tampilkan halaman 500 Kesalahan Sistem Server
+            setContentPane(new ServerErrorPanel(this, () -> {
+                setContentPane(panelUtama);
+                revalidate();
+                repaint();
+                handleLogin();
+            }));
+            revalidate();
+            repaint();
         }
     }
 
