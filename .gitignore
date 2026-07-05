@@ -37,3 +37,7 @@ gambar/
 
 # Local file
 instruksi lokal/
+
+# Environment Variables
+.env
+*.env

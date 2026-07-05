@@ -24,7 +24,7 @@ import java.util.List;
 public class TransaksiRepository {
 
     public int countToday() throws SQLException {
-        String sql = "SELECT COUNT(*) FROM transaksi WHERE DATE(created_at) = CURDATE()";
+        String sql = "SELECT COUNT(*) FROM transaksi WHERE DATE(created_at) = CURRENT_DATE";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -158,7 +158,7 @@ public class TransaksiRepository {
     }
 
     public void save(Transaksi transaksi) throws SQLException {
-        String sql = "INSERT INTO transaksi (id, id_barang, jumlah, tipe, created_by, keterangan) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO transaksi (id, id_barang, jumlah, tipe, created_by, keterangan) VALUES (CAST(? AS UUID), CAST(? AS UUID), ?, ?, CAST(? AS UUID), ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, transaksi.getId());

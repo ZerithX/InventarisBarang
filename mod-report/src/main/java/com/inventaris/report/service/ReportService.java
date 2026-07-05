@@ -25,7 +25,7 @@ public class ReportService {
            .append("COALESCE(SUM(CASE WHEN t.tipe = 'keluar' THEN t.jumlah ELSE 0 END), 0) AS total_keluar ")
            .append("FROM barang b ")
            .append("INNER JOIN kategori k ON b.id_kategori = k.id ")
-           .append("LEFT JOIN transaksi t ON b.id = t.id_barang AND YEAR(t.created_at) = ? AND MONTH(t.created_at) = ? ");
+           .append("LEFT JOIN transaksi t ON b.id = t.id_barang AND EXTRACT(YEAR FROM t.created_at) = ? AND EXTRACT(MONTH FROM t.created_at) = ? ");
         
         boolean hasCategoryFilter = kategoriId != null && !kategoriId.isEmpty() && !kategoriId.equalsIgnoreCase("ALL");
         if (hasCategoryFilter) {

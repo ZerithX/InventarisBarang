@@ -134,7 +134,7 @@ public class BarangRepository {
     }
 
     public void save(Barang b) throws SQLException {
-        String sql = "INSERT INTO barang (id, nama, id_kategori, stok, deskripsi) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO barang (id, nama, id_kategori, stok, deskripsi) VALUES (CAST(? AS UUID), ?, CAST(? AS UUID), ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, b.getId());
@@ -147,7 +147,7 @@ public class BarangRepository {
     }
 
     public void update(Barang b) throws SQLException {
-        String sql = "UPDATE barang SET nama = ?, id_kategori = ?, stok = ?, deskripsi = ? WHERE id = ?";
+        String sql = "UPDATE barang SET nama = ?, id_kategori = CAST(? AS UUID), stok = ?, deskripsi = ? WHERE id = CAST(? AS UUID)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, b.getNama());

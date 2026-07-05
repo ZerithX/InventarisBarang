@@ -17,7 +17,7 @@ public class ActivityLogger {
      * @param detail    Keterangan detil dari aktivitas tersebut.
      */
     public static void log(String idUser, String username, String role, String aktivitas, String detail) {
-        String sql = "INSERT INTO aktivitas_log (id, id_user, username, role, aktivitas, detail) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO aktivitas_log (id, id_user, username, role, aktivitas, detail) VALUES (CAST(? AS UUID), CAST(? AS UUID), ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, UUID.randomUUID().toString());
