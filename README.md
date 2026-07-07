@@ -38,12 +38,13 @@ Karena proyek ini tidak menggunakan build tool otomatis (seperti Maven/Gradle) d
 > **Tautan Resmi Unduhan Library (.jar):**
 > * **FlatLaf (UI Theme):** [Unduh FlatLaf di FormDev](https://www.formdev.com/flatlaf/#download)
 > * **MySQL Connector/J (Database Driver):** [Unduh MySQL Connector di Oracle](https://dev.mysql.com/downloads/connector/j/) (Pilih *Platform Independent* untuk versi zip/tar.gz berisi `.jar`)
+> * **OpenPDF (Cetak Laporan PDF):** [Unduh OpenPDF di GitHub Releases](https://github.com/LibrePDF/OpenPDF/releases)
 
 **Langkah menambahkan library di IntelliJ IDEA:**
-1. Unduh kedua file `.jar` dari tautan di atas.
+1. Unduh semua file `.jar` dari tautan di atas.
 2. Buka **File** > **Project Structure** (`Ctrl + Alt + Shift + S`).
 3. Pilih **Libraries** pada panel kiri, lalu klik tombol **+** (New Project Library) > **Java**.
-4. Cari dan pilih file `flatlaf-3.x.x.jar` dan `mysql-connector-j-x.x.x.jar` yang telah Anda unduh.
+4. Cari dan pilih file `flatlaf-3.x.x.jar`, `mysql-connector-j-x.x.x.jar`, dan `openpdf-x.x.x.jar` yang telah Anda unduh.
 5. Kaitkan library tersebut ke modul yang membutuhkannya (disarankan untuk memilih seluruh modul agar terhindar dari error kompilasi).
 6. Klik **Apply** lalu **OK**.
 
