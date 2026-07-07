@@ -41,9 +41,9 @@ public class TransactionService {
                 // 3. Sinkronisasikan stok barang terbaru ke database
                 barangRepository.updateStok(conn, transaksi.getBarang().getId(), transaksi.getBarang().getStok());
                 
-                conn.commit(); // Commit transaksi jika keduanya sukses
+                conn.commit();
             } catch (Exception ex) {
-                conn.rollback(); // Rollback jika ada yang gagal
+                conn.rollback();
                 throw ex;
             } finally {
                 conn.setAutoCommit(true);

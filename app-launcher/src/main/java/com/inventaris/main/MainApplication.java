@@ -10,11 +10,15 @@ import javax.swing.SwingUtilities;
  */
 public class MainApplication {
     public static void main(String[] args) {
-        // Load custom font so it can be referenced by its family name
-        try {
-            java.io.File fontFile = new java.io.File("app-launcher/src/main/java/com/inventaris/main/ui/components/Newsreader-VariableFont_opsz,wght.ttf");
-            java.awt.Font customFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, fontFile);
-            java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(customFont);
+        // Load custom font via classpath (works after build and on any machine)
+        try (java.io.InputStream fontStream = MainApplication.class.getResourceAsStream(
+                "/com/inventaris/main/ui/components/Newsreader-VariableFont_opsz,wght.ttf")) {
+            if (fontStream != null) {
+                java.awt.Font customFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, fontStream);
+                java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(customFont);
+            } else {
+                System.err.println("Font Newsreader tidak ditemukan di resources.");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
