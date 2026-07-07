@@ -5,6 +5,11 @@ import com.inventaris.inventory.domain.Barang;
 import com.inventaris.inventory.domain.Kategori;
 import com.inventaris.inventory.service.InventoryService;
 import com.inventaris.main.ui.components.BottomSheetOverlay;
+import com.inventaris.auth.domain.Session;
+import com.inventaris.auth.domain.User;
+import com.inventaris.transaction.service.TransactionService;
+import com.inventaris.transaction.repository.TransaksiRepository;
+import com.inventaris.inventory.repository.BarangRepository;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -244,13 +249,95 @@ public class FormBarangPanel extends JPanel {
                 String desc = taDesc.getText().trim();
 
                 try {
+                    // Ambil user dari Session
+                    User admin = Session.getLoggedInUser();
+                    String adminId = admin != null ? admin.getId() : "SYSTEM";
+                    String adminName = admin != null ? admin.getName() : "SYSTEM";
+                    String adminRole = admin != null ? admin.getRole().toString() : "ADMIN";
+
                     if (isEdit) {
-                        Barang updatedBarang = new Barang(existingBarang.getId(), nama, selectedKat, stok, desc);
+                        // Bandingkan perubahan field untuk log detail aktivitas
+                        List<String> editedFields = new java.util.ArrayList<>();
+                        
+                        if (!existingBarang.getNama().equals(nama)) {
+                            editedFields.add("Nama ('" + existingBarang.getNama() + "' -> '" + nama + "')");
+                        }
+                        if (existingBarang.getKategori() == null || !existingBarang.getKategori().getId().equals(selectedKat.getId())) {
+                            String oldKat = existingBarang.getKategori() != null ? existingBarang.getKategori().getNama() : "null";
+                            editedFields.add("Kategori ('" + oldKat + "' -> '" + selectedKat.getNama() + "')");
+                        }
+                        String oldDesc = existingBarang.getDeskripsi() != null ? existingBarang.getDeskripsi() : "";
+                        if (!oldDesc.equals(desc)) {
+                            editedFields.add("Deskripsi");
+                        }
+                        
+                        int oldStok = existingBarang.getStok();
+                        if (oldStok != stok) {
+                            editedFields.add("Stok (" + oldStok + " -> " + stok + ")");
+                        }
+                        
+                        // Simpan perubahan barang ke database (pertahankan oldStok dahulu)
+                        Barang updatedBarang = new Barang(existingBarang.getId(), nama, selectedKat, oldStok, desc);
                         inventoryService.updateBarang(updatedBarang);
+                        
+                        // Jika stok berubah, buat transaksi penyesuaian otomatis
+                        if (oldStok != stok) {
+                            int selisih = stok - oldStok;
+                            TransactionService txService = new TransactionService(
+                                new TransaksiRepository(), 
+                                new BarangRepository()
+                            );
+                            
+                            if (selisih > 0) {
+                                com.inventaris.transaction.domain.BarangMasuk adjustTx = 
+                                    new com.inventaris.transaction.domain.BarangMasuk(updatedBarang, selisih, admin, "Penyesuaian stok manual (Edit Barang oleh Admin)");
+                                txService.executeTransaction(adjustTx);
+                            } else {
+                                com.inventaris.transaction.domain.BarangKeluar adjustTx = 
+                                    new com.inventaris.transaction.domain.BarangKeluar(updatedBarang, -selisih, admin, "Penyesuaian stok manual (Edit Barang oleh Admin)");
+                                txService.executeTransaction(adjustTx);
+                            }
+                        }
+                        
+                        // Log aktivitas detail perubahan field
+                        String logDetail = "Mengedit barang: " + nama + " (ID: " + existingBarang.getId() + ").";
+                        if (!editedFields.isEmpty()) {
+                            logDetail += " Field yang diubah: " + String.join(", ", editedFields);
+                        } else {
+                            logDetail += " Tidak ada perubahan field.";
+                        }
+                        
+                        com.inventaris.core.util.ActivityLogger.log(
+                            adminId,
+                            adminName,
+                            adminRole,
+                            "EDIT_BARANG",
+                            logDetail
+                        );
                     } else {
                         String newId = UUID.randomUUID().toString();
-                        Barang newBarang = new Barang(newId, nama, selectedKat, stok, desc);
+                        Barang newBarang = new Barang(newId, nama, selectedKat, 0, desc); // Mulai dari 0 agar saat ditambah transaksi mutasinya valid
                         inventoryService.saveBarang(newBarang);
+                        
+                        // Jika ada stok awal > 0, buat transaksi penyesuaian awal
+                        if (stok > 0) {
+                            com.inventaris.transaction.domain.BarangMasuk initTx = 
+                                new com.inventaris.transaction.domain.BarangMasuk(newBarang, stok, admin, "Stok awal barang baru oleh Admin");
+                            TransactionService txService = new TransactionService(
+                                new TransaksiRepository(), 
+                                new BarangRepository()
+                            );
+                            txService.executeTransaction(initTx);
+                        }
+                        
+                        // Log aktivitas
+                        com.inventaris.core.util.ActivityLogger.log(
+                            adminId,
+                            adminName,
+                            adminRole,
+                            "TAMBAH_BARANG",
+                            "Menambah barang baru: " + nama + " (ID: " + newId + ") dengan Kategori: " + selectedKat.getNama() + " dan Stok Awal: " + stok
+                        );
                     }
 
                     // Run refresh callback to update dashboard & kelola view
@@ -259,9 +346,9 @@ public class FormBarangPanel extends JPanel {
                     }
 
                     bottomSheetOverlay.closeSheet();
-                } catch (SQLException ex) {
+                } catch (Exception ex) {
                     ex.printStackTrace();
-                    JOptionPane.showMessageDialog(FormBarangPanel.this, "Gagal menyimpan barang ke database: " + ex.getMessage(), "Error Database", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(FormBarangPanel.this, "Gagal menyimpan barang: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

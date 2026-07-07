@@ -318,19 +318,11 @@ public class FormTransaksiMasukPanel extends JPanel {
     private void loadData() {
         cbBarang.removeAllItems();
         cbBarang.addItem("Pilih Barang...");
-        cbBarang.addItem("+ Tambah Barang Baru");
 
         try {
             barangList = inventoryService.getAllBarang();
             for (Barang b : barangList) {
                 cbBarang.addItem(b.getNama());
-            }
-
-            kategoriList = inventoryService.getAllKategori();
-            cbKategoriBaru.removeAllItems();
-            cbKategoriBaru.addItem("-- Pilih Kategori --");
-            for (Kategori k : kategoriList) {
-                cbKategoriBaru.addItem(k.getNama());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -341,18 +333,10 @@ public class FormTransaksiMasukPanel extends JPanel {
         int idx = cbBarang.getSelectedIndex();
         if (idx == 0) { // Placeholder
             infoStokBox.setVisible(true);
-            newBarangContainer.setVisible(false);
             lblStokSaatIni.setText("0 Unit");
-        } else if (idx == 1) { // Tambah Barang Baru
-            infoStokBox.setVisible(false);
-            newBarangContainer.setVisible(true);
-            txtNamaBarangBaru.setText("");
-            cbKategoriBaru.setSelectedIndex(0);
-            txtDeskripsiBaru.setText("");
         } else { // Barang terdaftar
             infoStokBox.setVisible(true);
-            newBarangContainer.setVisible(false);
-            Barang b = barangList.get(idx - 2);
+            Barang b = barangList.get(idx - 1);
             lblStokSaatIni.setText(b.getStok() + " Unit");
         }
 
@@ -392,25 +376,6 @@ public class FormTransaksiMasukPanel extends JPanel {
         }
         txtJumlah.putClientProperty("JComponent.outline", null);
 
-        if (selectionIndex == 1) {
-            // Validasi Input Barang Baru
-            String namaBaru = txtNamaBarangBaru.getText().trim();
-            if (namaBaru.isEmpty()) {
-                txtNamaBarangBaru.putClientProperty("JComponent.outline", "error");
-                JOptionPane.showMessageDialog(this, "Nama barang baru tidak boleh kosong!", "Peringatan", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            txtNamaBarangBaru.putClientProperty("JComponent.outline", null);
-
-            int katIdx = cbKategoriBaru.getSelectedIndex();
-            if (katIdx == 0) {
-                cbKategoriBaru.putClientProperty("JComponent.outline", "error");
-                JOptionPane.showMessageDialog(this, "Silakan pilih kategori untuk barang baru!", "Peringatan", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            cbKategoriBaru.putClientProperty("JComponent.outline", null);
-        }
-
         // Tampilkan Popup Konfirmasi Simpan Transaksi
         JPanel confirmPanel = ConfirmDialogs.createSaveConfirmationDialog(
             "Simpan Transaksi",
@@ -427,27 +392,7 @@ public class FormTransaksiMasukPanel extends JPanel {
     }
 
     private void prosesSimpanTransaksi(int selectionIndex, int jumlah) {
-        Barang targetBarang;
-
-        if (selectionIndex == 1) {
-            String namaBaru = txtNamaBarangBaru.getText().trim();
-            int katIdx = cbKategoriBaru.getSelectedIndex();
-            Kategori targetKategori = kategoriList.get(katIdx - 1);
-            String deskripsiBaru = txtDeskripsiBaru.getText().trim();
-
-            try {
-                // Buat barang baru di db dengan stok awal 0
-                Barang bBaru = new Barang(namaBaru, targetKategori, 0, deskripsiBaru);
-                inventoryService.saveBarang(bBaru);
-                targetBarang = bBaru;
-            } catch (SQLException e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Gagal membuat data barang baru ke database: " + e.getMessage(), "Error Database", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        } else {
-            targetBarang = barangList.get(selectionIndex - 2);
-        }
+        Barang targetBarang = barangList.get(selectionIndex - 1);
 
         // Tulis dan eksekusi transaksi masuk
         String keteranganText = txtKeterangan.getText().trim();
@@ -456,13 +401,47 @@ public class FormTransaksiMasukPanel extends JPanel {
         try {
             transactionService.executeTransaction(transaksi);
             
+            // Log aktivitas staff input barang masuk
+            com.inventaris.core.util.ActivityLogger.log(
+                staffUser.getId(),
+                staffUser.getName(),
+                "STAFF",
+                "TRANSAKSI_MASUK",
+                "Menginput transaksi barang masuk: " + targetBarang.getNama() + " sejumlah " + jumlah + " unit. Keterangan: " + keteranganText
+            );
+
             if (refreshCallback != null) {
                 refreshCallback.run();
             }
             bottomSheetOverlay.closeSheet();
         } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Gagal menyimpan transaksi: " + e.getMessage(), "Error Transaksi", JOptionPane.ERROR_MESSAGE);
+            boolean isDeleted = false;
+            try {
+                java.util.Optional<com.inventaris.inventory.domain.Barang> checkB = 
+                    new com.inventaris.inventory.repository.BarangRepository().findById(targetBarang.getId());
+                if (checkB.isEmpty()) {
+                    isDeleted = true;
+                }
+            } catch (Exception ignored) {}
+
+            if (isDeleted) {
+                System.err.println("[404] Barang tidak ditemukan di DB saat transaksi: id=" + targetBarang.getId() + " | " + e.getMessage());
+                show404Error();
+            } else {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Gagal menyimpan transaksi: " + e.getMessage(), "Error Transaksi", JOptionPane.ERROR_MESSAGE);
+            }
         }
+    }
+
+    private void show404Error() {
+        bottomSheetOverlay.openDialog(
+            com.inventaris.main.ui.components.ConfirmDialogs.createNotFoundErrorDialog(() -> {
+                bottomSheetOverlay.closeDialog();
+                if (refreshCallback != null) {
+                    refreshCallback.run();
+                }
+            }), 340, 320
+        );
     }
 }

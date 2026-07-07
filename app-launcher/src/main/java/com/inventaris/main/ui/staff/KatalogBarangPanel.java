@@ -147,6 +147,7 @@ public class KatalogBarangPanel extends JPanel {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Gagal memuat kategori barang: " + e.getMessage(), "Error Database", JOptionPane.ERROR_MESSAGE);
         }
 
         pillsPanel.revalidate();
@@ -229,6 +230,7 @@ public class KatalogBarangPanel extends JPanel {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Gagal memuat katalog barang: " + e.getMessage(), "Error Database", JOptionPane.ERROR_MESSAGE);
         }
 
         catalogItemsPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, catalogItemsPanel.getPreferredSize().height));

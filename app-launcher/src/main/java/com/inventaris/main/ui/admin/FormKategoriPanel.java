@@ -4,6 +4,9 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.inventaris.inventory.domain.Kategori;
 import com.inventaris.inventory.service.InventoryService;
 import com.inventaris.main.ui.components.BottomSheetOverlay;
+import com.inventaris.auth.domain.Session;
+import com.inventaris.auth.domain.User;
+import com.inventaris.core.util.ActivityLogger;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -37,6 +40,7 @@ public class FormKategoriPanel extends JPanel {
         // Header: Title & Close Icon
         JPanel header = new JPanel(new BorderLayout());
         header.setOpaque(false);
+        header.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); // Batasi agar tidak melar vertikal
         JLabel lblTitle = new JLabel(isEdit ? "Edit Category" : "Add New Category");
         lblTitle.setFont(new Font("Newsreader 16pt", Font.PLAIN, 24));
         lblTitle.setForeground(Color.decode("#111111"));
@@ -75,8 +79,9 @@ public class FormKategoriPanel extends JPanel {
                 new EmptyBorder(5, 10, 5, 10)
         ));
         pnlName.add(txtName, BorderLayout.CENTER);
+        pnlName.setMaximumSize(new Dimension(Integer.MAX_VALUE, 65)); // Batasi agar field input tidak melar
         add(pnlName);
-        add(Box.createVerticalStrut(25));
+        add(Box.createVerticalGlue()); // Menaruh jarak/glue fleksibel di sini untuk mendorong tombol ke bawah
 
         // Action Buttons Row
         JPanel pnlButtons = new JPanel(new GridLayout(1, 2, 15, 0));
@@ -137,13 +142,38 @@ public class FormKategoriPanel extends JPanel {
                 }
 
                 try {
+                    // Ambil user dari Session
+                    User admin = Session.getLoggedInUser();
+                    String adminId = admin != null ? admin.getId() : "SYSTEM";
+                    String adminName = admin != null ? admin.getName() : "SYSTEM";
+                    String adminRole = admin != null ? admin.getRole().toString() : "ADMIN";
+
                     if (isEdit) {
+                        String oldName = existingKategori.getNama();
                         Kategori updatedKategori = new Kategori(existingKategori.getId(), nama);
                         inventoryService.updateKategori(updatedKategori);
+
+                        // Log edit kategori
+                        ActivityLogger.log(
+                            adminId,
+                            adminName,
+                            adminRole,
+                            "EDIT_KATEGORI",
+                            "Mengubah nama kategori dari '" + oldName + "' menjadi '" + nama + "' (ID: " + existingKategori.getId() + ")"
+                        );
                     } else {
                         String newId = UUID.randomUUID().toString();
                         Kategori newKategori = new Kategori(newId, nama);
                         inventoryService.saveKategori(newKategori);
+
+                        // Log tambah kategori
+                        ActivityLogger.log(
+                            adminId,
+                            adminName,
+                            adminRole,
+                            "TAMBAH_KATEGORI",
+                            "Menambah kategori baru: " + nama + " (ID: " + newId + ")"
+                        );
                     }
 
                     // Run refresh callback to update dashboard & kelola view

@@ -9,6 +9,7 @@ import com.inventaris.auth.domain.Staff;
 import com.inventaris.auth.repository.UserRepository;
 import com.inventaris.auth.service.AuthService;
 import com.inventaris.core.exception.AuthException;
+import com.inventaris.main.ui.components.ServerErrorPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -110,20 +111,38 @@ public class LoginFrame extends JFrame {
 
         try {
             User user = authService.login(username, password);
+            com.inventaris.auth.domain.Session.setLoggedInUser(user);
+            
+            // Log login activity
+            com.inventaris.core.util.ActivityLogger.log(
+                user.getId(),
+                user.getName(),
+                user.getRole().toString(),
+                "LOGIN",
+                "User " + user.getName() + " berhasil login dengan role " + user.getRole()
+            );
+
             JOptionPane.showMessageDialog(this,
                     "Login Berhasil!\nSelamat datang, " + user.getName() + " (" + user.getRole() + ")",
                     "Sukses",
                     JOptionPane.INFORMATION_MESSAGE);
 
             user.tampilkanMenu();
-
             this.dispose();
 
         } catch (AuthException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Login Gagal", JOptionPane.WARNING_MESSAGE);
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Terjadi kesalahan sistem: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            // Tampilkan halaman 500 Kesalahan Sistem Server
+            setContentPane(new ServerErrorPanel(this, () -> {
+                setContentPane(panelUtama);
+                revalidate();
+                repaint();
+                handleLogin();
+            }));
+            revalidate();
+            repaint();
         }
     }
 

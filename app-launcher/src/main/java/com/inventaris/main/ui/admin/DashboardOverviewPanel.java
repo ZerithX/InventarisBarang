@@ -156,6 +156,7 @@ public class DashboardOverviewPanel extends JPanel {
             lblTransaksiHariIni.setText(String.valueOf(transaksiHariIni));
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Gagal memuat ringkasan dashboard: " + e.getMessage(), "Error Database", JOptionPane.ERROR_MESSAGE);
         }
 
         loadBarangData(searchField != null ? searchField.getText() : "");
@@ -201,6 +202,7 @@ public class DashboardOverviewPanel extends JPanel {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Gagal memuat daftar barang terbaru: " + e.getMessage(), "Error Database", JOptionPane.ERROR_MESSAGE);
         }
         listPanel.revalidate();
         listPanel.repaint();
