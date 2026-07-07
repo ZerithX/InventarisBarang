@@ -94,9 +94,21 @@ public class KatalogBarangPanel extends JPanel {
         pillsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JScrollPane pillsScroll = new JScrollPane(pillsPanel);
-        pillsScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        pillsScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         pillsScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         pillsScroll.setBorder(null);
+        
+        // Sembunyikan garis scrollbar namun tetap bisa di-scroll
+        pillsScroll.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0));
+        // Buat scroll lebih mulus
+        pillsScroll.getHorizontalScrollBar().setUnitIncrement(16);
+        
+        // Memungkinkan scroll menggunakan mouse wheel
+        pillsScroll.addMouseWheelListener(e -> {
+            JScrollBar hBar = pillsScroll.getHorizontalScrollBar();
+            hBar.setValue(hBar.getValue() + (e.getWheelRotation() * hBar.getUnitIncrement() * 2));
+        });
+
         pillsScroll.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         pillsScroll.setAlignmentX(Component.LEFT_ALIGNMENT);
 
