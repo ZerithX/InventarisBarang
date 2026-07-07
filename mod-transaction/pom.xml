@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.inventaris</groupId>
+        <artifactId>inventaris-barang</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>mod-transaction</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.inventaris</groupId>
+            <artifactId>core-shared</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.inventaris</groupId>
+            <artifactId>mod-auth</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.inventaris</groupId>
+            <artifactId>mod-inventory</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+</project>
