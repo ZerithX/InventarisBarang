@@ -31,26 +31,20 @@ cd InventarisBarang
 2. Pilih "Open" dan arahkan ke folder proyek hasil kloning (`InventarisBarang`).
 3. Tunggu proses sinkronisasi dan indexing selesai sepenuhnya.
 
-### 3. Setup Library Dependensi (Manual)
-Karena proyek ini tidak menggunakan build tool otomatis (seperti Maven/Gradle) dan file konfigurasi IDE diabaikan oleh `.gitignore`, Anda perlu mengunduh dan menyetel library eksternal secara manual agar proyek dapat dikompilasi tanpa error:
+### 3. Sinkronisasi Library (Maven)
+Karena proyek ini sekarang telah menggunakan **Maven** untuk manajemen dependensi, kamu tidak perlu repot mengunduh `.jar` secara manual.
 
-> [!IMPORTANT]
-> **Tautan Resmi Unduhan Library (.jar):**
-> * **FlatLaf (UI Theme):** [Unduh FlatLaf di FormDev](https://www.formdev.com/flatlaf/#download)
-> * **MySQL Connector/J (Database Driver):** [Unduh MySQL Connector di Oracle](https://dev.mysql.com/downloads/connector/j/) (Pilih *Platform Independent* untuk versi zip/tar.gz berisi `.jar`)
-> * **OpenPDF (Cetak Laporan PDF):** [Unduh OpenPDF di GitHub Releases](https://github.com/LibrePDF/OpenPDF/releases)
-
-**Langkah menambahkan library di IntelliJ IDEA:**
-1. Unduh semua file `.jar` dari tautan di atas.
-2. Buka **File** > **Project Structure** (`Ctrl + Alt + Shift + S`).
-3. Pilih **Libraries** pada panel kiri, lalu klik tombol **+** (New Project Library) > **Java**.
-4. Cari dan pilih file `flatlaf-3.x.x.jar`, `mysql-connector-j-x.x.x.jar`, dan `openpdf-x.x.x.jar` yang telah Anda unduh.
-5. Kaitkan library tersebut ke modul yang membutuhkannya (disarankan untuk memilih seluruh modul agar terhindar dari error kompilasi).
-6. Klik **Apply** lalu **OK**.
+**Langkah sinkronisasi di IntelliJ IDEA:**
+1. Jika muncul *pop-up* notifikasi Maven di pojok kanan bawah, klik **Load Maven Changes**.
+2. Jika tidak muncul, klik kanan pada file `pom.xml` yang berada di direktori paling luar.
+3. Pilih **Add as Maven Project**.
+4. Tunggu beberapa detik hingga proses *sync* selesai. IntelliJ akan mengunduh MySQL Connector, FlatLaf, dan OpenPDF secara otomatis.
 
 ### 4. Jalankan Aplikasi
 1. Cari kelas utama `MainApplication.java` yang berada di dalam modul `app-launcher`.
-2. Klik tombol **Run** (ikon segitiga hijau) pada IDE Anda.
+2. Eksekusi program sesuai dengan IDE yang Anda gunakan:
+   * **IntelliJ IDEA / Eclipse:** Klik tombol **Run** (ikon segitiga hijau) di *toolbar* atas atau tepat di sebelah nomor baris kode.
+   * **VS Code (Visual Studio Code):** Pastikan ekstensi *Java* sudah terpasang, lalu klik teks kecil **Run** yang muncul persis di atas kode `public static void main`, atau klik tombol *Play* di pojok kanan atas editor.
 3. Aplikasi akan berjalan di environment lokal Anda.
 
 
