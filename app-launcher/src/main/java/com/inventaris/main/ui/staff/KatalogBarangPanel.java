@@ -46,7 +46,7 @@ public class KatalogBarangPanel extends JPanel {
 
         // 1. Header
         JLabel lblTitle = new JLabel("Katalog Barang");
-        lblTitle.setFont(new Font("Inter", Font.BOLD, 28));
+        lblTitle.setFont(new Font("Newsreader 16pt", Font.BOLD, 24));
         lblTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         container.add(lblTitle);
 

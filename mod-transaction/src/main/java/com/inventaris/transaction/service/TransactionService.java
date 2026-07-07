@@ -32,11 +32,23 @@ public class TransactionService {
         // 1. Eksekusi mutasi stok di level objek (melempar StockException jika tidak valid)
         transaksi.prosesStok();
 
-        // 2. Simpan data transaksi baru ke database
-        transaksiRepository.save(transaksi);
+        try (java.sql.Connection conn = com.inventaris.core.util.DatabaseConnection.getConnection()) {
+            conn.setAutoCommit(false); // Mulai transaksi database
+            try {
+                // 2. Simpan data transaksi baru ke database
+                transaksiRepository.save(conn, transaksi);
 
-        // 3. Sinkronisasikan stok barang terbaru ke database
-        barangRepository.updateStok(transaksi.getBarang().getId(), transaksi.getBarang().getStok());
+                // 3. Sinkronisasikan stok barang terbaru ke database
+                barangRepository.updateStok(conn, transaksi.getBarang().getId(), transaksi.getBarang().getStok());
+                
+                conn.commit(); // Commit transaksi jika keduanya sukses
+            } catch (Exception ex) {
+                conn.rollback(); // Rollback jika ada yang gagal
+                throw ex;
+            } finally {
+                conn.setAutoCommit(true);
+            }
+        }
     }
 
     public List<Transaksi> getTransactionsByUser(String userId) throws SQLException {

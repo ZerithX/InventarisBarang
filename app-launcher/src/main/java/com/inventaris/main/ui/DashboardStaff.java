@@ -89,8 +89,8 @@ public class DashboardStaff extends JFrame {
                 new EmptyBorder(15, 20, 15, 20)
         ));
 
-        JLabel lblBrand = new JLabel("Kinetic Inventory");
-        lblBrand.setFont(new Font("Newsreader 16pt", Font.PLAIN, 24));
+        JLabel lblBrand = new JLabel("Managemen Inventaris");
+        lblBrand.setFont(new Font("Newsreader 16pt", Font.BOLD, 24));
 
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         rightPanel.setBackground(Color.WHITE);

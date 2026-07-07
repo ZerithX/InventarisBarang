@@ -88,7 +88,7 @@ public class LaporanPanel extends JPanel {
         btnCetak.putClientProperty("JComponent.roundRect", true);
         btnCetak.setBorder(BorderFactory.createCompoundBorder(
                 btnCetak.getBorder(),
-                new EmptyBorder(5, 15, 5, 15)
+                new EmptyBorder(5, 10, 5, 10)
         ));
 
         btnCetak.addActionListener(e -> {
