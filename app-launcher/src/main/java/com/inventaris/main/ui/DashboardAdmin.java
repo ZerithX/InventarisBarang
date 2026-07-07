@@ -142,7 +142,7 @@ public class DashboardAdmin extends JFrame {
         ));
 
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Newsreader", Font.BOLD, 22));
+        titleLabel.setFont(new Font("Newsreader 16pt", Font.BOLD, 22));
         titleLabel.setForeground(Color.DARK_GRAY);
 
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));

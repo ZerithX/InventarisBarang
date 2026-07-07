@@ -64,7 +64,7 @@ public class LaporanPanel extends JPanel {
         titlePanel.setBackground(Color.WHITE);
 
         JLabel lblTitle = new JLabel("Laporan Stok Barang");
-        lblTitle.setFont(new Font("Newsreader", Font.BOLD, 22));
+        lblTitle.setFont(new Font("Newsreader 16pt", Font.BOLD, 22));
         lblTitle.setForeground(Color.DARK_GRAY);
 
         // Format nama bulan dalam Bahasa Indonesia
@@ -109,7 +109,7 @@ public class LaporanPanel extends JPanel {
         // JComboBox Kategori
         cbKategori = new JComboBox<>();
         cbKategori.setFont(new Font("Inter", Font.PLAIN, 14));
-        cbKategori.putClientProperty("JComponent.roundRect", true);
+        cbKategori.putClientProperty("Component.arc", 8);
         cbKategori.setPreferredSize(new Dimension(Integer.MAX_VALUE, 40));
         cbKategori.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         cbKategori.setAlignmentX(Component.LEFT_ALIGNMENT);

@@ -43,7 +43,7 @@ public class FormBarangPanel extends JPanel {
         JPanel header = new JPanel(new BorderLayout());
         header.setOpaque(false);
         JLabel lblTitle = new JLabel(isEdit ? "Edit Item" : "Add New Item");
-        lblTitle.setFont(new Font("Georgia", Font.PLAIN, 24));
+        lblTitle.setFont(new Font("Newsreader 16pt", Font.PLAIN, 24));
         lblTitle.setForeground(Color.decode("#111111"));
 
         JLabel lblClose = new JLabel("✕");

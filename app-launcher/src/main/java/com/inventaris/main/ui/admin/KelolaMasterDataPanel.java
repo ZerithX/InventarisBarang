@@ -54,7 +54,7 @@ public class KelolaMasterDataPanel extends JPanel {
         ));
 
         JLabel titleLabel = new JLabel("Kelola Master Data", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Newsreader", Font.BOLD, 22));
+        titleLabel.setFont(new Font("Newsreader 16pt", Font.BOLD, 22));
         titleLabel.setForeground(Color.DARK_GRAY);
         headerBar.add(titleLabel, BorderLayout.CENTER);
 

@@ -38,7 +38,7 @@ public class FormKategoriPanel extends JPanel {
         JPanel header = new JPanel(new BorderLayout());
         header.setOpaque(false);
         JLabel lblTitle = new JLabel(isEdit ? "Edit Category" : "Add New Category");
-        lblTitle.setFont(new Font("Georgia", Font.PLAIN, 24));
+        lblTitle.setFont(new Font("Newsreader 16pt", Font.PLAIN, 24));
         lblTitle.setForeground(Color.decode("#111111"));
 
         JLabel lblClose = new JLabel("✕");

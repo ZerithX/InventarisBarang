@@ -47,13 +47,13 @@ public class LoginFrame extends JFrame {
         applyFlatLafStyling();
         initListeners();
 
-        setSize(390, 700);
+        setSize(400, 750);
         setLocationRelativeTo(null);
     }
 
     private void applyFlatLafStyling() {
         panelUtama.setBackground(Color.white);
-        lblJudul.setFont(new Font("Newsreader", Font.BOLD, 32));
+        lblJudul.setFont(new Font("Newsreader 16pt", Font.BOLD, 32));
         lblSubtitile.setFont(new Font("inter", Font.PLAIN, 14));
         txtUsername.setFont(new Font("inter", Font.PLAIN, 14));
         txtPassword.setFont(new Font("inter", Font.PLAIN, 14));
