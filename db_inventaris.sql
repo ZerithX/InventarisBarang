@@ -82,6 +82,8 @@ ON DUPLICATE KEY UPDATE id=id;
 
 -- Dumping data for table `transaksi`
 INSERT INTO `transaksi` (`id`, `id_barang`, `jumlah`, `tipe`, `created_by`, `created_at`, `keterangan`) VALUES
-('59a1b80d-9f82-4288-0e2d-3defadef4587', '156d74d9-5b4e-4e44-cae9-f9ae69fa0143', 5, 'masuk', '9a6fb44a-6fe6-11f1-aefe-2c1b3ae3ac30', NOW(), 'Stok awal laptop pro x'),
-('6ab2c91e-0a93-4399-1f3e-4ef0bef05698', '267e85ea-6c5f-4f55-dbfa-0abf7afb1254', 2, 'masuk', '9a6fb44a-6fe6-11f1-aefe-2c1b3ae3ac30', NOW(), 'Stok awal monitor 27 4k')
+('59a1b80d-9f82-4288-0e2d-3defadef4587', '156d74d9-5b4e-4e44-cae9-f9ae69fa0143', 45, 'masuk', '9a6fb44a-6fe6-11f1-aefe-2c1b3ae3ac30', NOW(), 'Stok awal laptop pro x'),
+('6ab2c91e-0a93-4399-1f3e-4ef0bef05698', '267e85ea-6c5f-4f55-dbfa-0abf7afb1254', 2, 'masuk', '9a6fb44a-6fe6-11f1-aefe-2c1b3ae3ac30', NOW(), 'Stok awal monitor 27 4k'),
+('7bc3da2f-1b1a-4d22-2a4f-5ef1cfa26701', '378f96fb-7d60-4066-ec0b-1bcd8bcd2365', 12, 'masuk', '9a6fb44a-6fe6-11f1-aefe-2c1b3ae3ac30', NOW(), 'Stok awal ergonomic chair'),
+('8cd4eb30-2c2b-5e33-3b50-6f02d0b37812', '4890a7fc-8e71-4177-fd1c-2cde9cde3476', 3, 'masuk', '9a6fb44a-6fe6-11f1-aefe-2c1b3ae3ac30', NOW(), 'Stok awal USB-C hub')
 ON DUPLICATE KEY UPDATE id=id;

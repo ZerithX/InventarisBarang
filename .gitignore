@@ -39,3 +39,8 @@ gambar/
 
 # Local file
 instruksi lokal/
+
+.env
+
+mysql-connector-j-8.4.0.jar
+app-launcher/src/main/java/com/inventaris/main/TestDB.java

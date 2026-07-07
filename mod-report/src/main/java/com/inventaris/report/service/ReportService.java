@@ -21,11 +21,16 @@ public class ReportService {
         
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT b.id, b.nama, b.stok, k.nama AS nama_kategori, ")
-           .append("COALESCE(SUM(CASE WHEN t.tipe = 'masuk' THEN t.jumlah ELSE 0 END), 0) AS total_masuk, ")
-           .append("COALESCE(SUM(CASE WHEN t.tipe = 'keluar' THEN t.jumlah ELSE 0 END), 0) AS total_keluar ")
+           // Stok Awal = b.stok - (Semua Masuk >= Target) + (Semua Keluar >= Target)
+           .append("b.stok ")
+           .append("- COALESCE(SUM(CASE WHEN DATE(t.created_at) >= ? AND t.tipe = 'masuk' THEN t.jumlah ELSE 0 END), 0) ")
+           .append("+ COALESCE(SUM(CASE WHEN DATE(t.created_at) >= ? AND t.tipe = 'keluar' THEN t.jumlah ELSE 0 END), 0) AS stok_awal, ")
+           // Transaksi Bulan Ini
+           .append("COALESCE(SUM(CASE WHEN YEAR(t.created_at) = ? AND MONTH(t.created_at) = ? AND t.tipe = 'masuk' THEN t.jumlah ELSE 0 END), 0) AS total_masuk, ")
+           .append("COALESCE(SUM(CASE WHEN YEAR(t.created_at) = ? AND MONTH(t.created_at) = ? AND t.tipe = 'keluar' THEN t.jumlah ELSE 0 END), 0) AS total_keluar ")
            .append("FROM barang b ")
            .append("INNER JOIN kategori k ON b.id_kategori = k.id ")
-           .append("LEFT JOIN transaksi t ON b.id = t.id_barang AND YEAR(t.created_at) = ? AND MONTH(t.created_at) = ? ");
+           .append("LEFT JOIN transaksi t ON b.id = t.id_barang ");
         
         boolean hasCategoryFilter = kategoriId != null && !kategoriId.isEmpty() && !kategoriId.equalsIgnoreCase("ALL");
         if (hasCategoryFilter) {
@@ -38,10 +43,15 @@ public class ReportService {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql.toString())) {
             
-            ps.setInt(1, tahun);
-            ps.setInt(2, bulan);
+            String targetDate = String.format("%04d-%02d-01", tahun, bulan);
+            ps.setString(1, targetDate); // Untuk perhitungan stok_awal (masuk)
+            ps.setString(2, targetDate); // Untuk perhitungan stok_awal (keluar)
+            ps.setInt(3, tahun);
+            ps.setInt(4, bulan);
+            ps.setInt(5, tahun);
+            ps.setInt(6, bulan);
             if (hasCategoryFilter) {
-                ps.setString(3, kategoriId);
+                ps.setString(7, kategoriId);
             }
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -50,9 +60,9 @@ public class ReportService {
                         rs.getString("id"),
                         rs.getString("nama"),
                         rs.getString("nama_kategori"),
+                        rs.getInt("stok_awal"),
                         rs.getInt("total_masuk"),
-                        rs.getInt("total_keluar"),
-                        rs.getInt("stok")
+                        rs.getInt("total_keluar")
                     );
                     list.add(item);
                 }

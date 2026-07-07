@@ -9,15 +9,14 @@ public class LaporanItem {
     private int keluar;
     private int stokAkhir;
 
-    public LaporanItem(String idBarang, String namaBarang, String namaKategori, int masuk, int keluar, int stokAkhir) {
+    public LaporanItem(String idBarang, String namaBarang, String namaKategori, int stokAwal, int masuk, int keluar) {
         this.idBarang = idBarang;
         this.namaBarang = namaBarang;
         this.namaKategori = namaKategori;
+        this.stokAwal = stokAwal;
         this.masuk = masuk;
         this.keluar = keluar;
-        this.stokAkhir = stokAkhir;
-        // Rumus: Awal = Akhir - Masuk + Keluar
-        this.stokAwal = stokAkhir - masuk + keluar;
+        this.stokAkhir = stokAwal + masuk - keluar;
     }
 
     public String getIdBarang() {

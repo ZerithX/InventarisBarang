@@ -52,7 +52,7 @@ public class DashboardStaff extends JFrame {
     private void initComponents() {
         setTitle("Sistem Inventaris - Dashboard");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(420, 800);
+        setSize(400, 750);
         setLocationRelativeTo(null);
         setResizable(false);
         getContentPane().setBackground(Color.WHITE);
@@ -89,8 +89,8 @@ public class DashboardStaff extends JFrame {
                 new EmptyBorder(15, 20, 15, 20)
         ));
 
-        JLabel lblBrand = new JLabel("Kinetic Inventory");
-        lblBrand.setFont(new Font("Georgia", Font.PLAIN, 24));
+        JLabel lblBrand = new JLabel("Managemen Inventaris");
+        lblBrand.setFont(new Font("Newsreader 16pt", Font.BOLD, 24));
 
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         rightPanel.setBackground(Color.WHITE);

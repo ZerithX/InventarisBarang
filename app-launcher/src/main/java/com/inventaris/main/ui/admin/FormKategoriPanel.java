@@ -42,7 +42,7 @@ public class FormKategoriPanel extends JPanel {
         header.setOpaque(false);
         header.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); // Batasi agar tidak melar vertikal
         JLabel lblTitle = new JLabel(isEdit ? "Edit Category" : "Add New Category");
-        lblTitle.setFont(new Font("Georgia", Font.PLAIN, 24));
+        lblTitle.setFont(new Font("Newsreader 16pt", Font.PLAIN, 24));
         lblTitle.setForeground(Color.decode("#111111"));
 
         JLabel lblClose = new JLabel("✕");

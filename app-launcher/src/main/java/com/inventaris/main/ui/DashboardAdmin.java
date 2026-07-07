@@ -94,9 +94,9 @@ public class DashboardAdmin extends JFrame {
         ));
         bottomNav.setPreferredSize(new Dimension(400, 70));
 
-        btnDashboard = createNavButton("■", "Dashboard", true);
-        btnKelola = createNavButton("□", "Kelola Data", false);
-        btnLaporan = createNavButton("📈", "Laporan", false);
+        btnDashboard = createNavButton("\u25A6", "Dashboard", true);
+        btnKelola = createNavButton("\u25A4", "Kelola Data", false);
+        btnLaporan = createNavButton("\uD83D\uDCCA", "Laporan", false);
 
         btnDashboard.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -142,7 +142,7 @@ public class DashboardAdmin extends JFrame {
         ));
 
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Newsreader", Font.BOLD, 22));
+        titleLabel.setFont(new Font("Newsreader 16pt", Font.BOLD, 22));
         titleLabel.setForeground(Color.DARK_GRAY);
 
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
@@ -215,9 +215,9 @@ public class DashboardAdmin extends JFrame {
 
     private void switchTab(String tabName) {
         cardLayout.show(cardPanel, tabName);
-        updateNavButtonState(btnDashboard, "■", "Dashboard", "DASHBOARD".equals(tabName));
-        updateNavButtonState(btnKelola, "□", "Kelola Data", "KELOLA_DATA".equals(tabName));
-        updateNavButtonState(btnLaporan, "📈", "Laporan", "LAPORAN".equals(tabName));
+        updateNavButtonState(btnDashboard, "\u25A6", "Dashboard", "DASHBOARD".equals(tabName));
+        updateNavButtonState(btnKelola, "\u25A4", "Kelola Data", "KELOLA_DATA".equals(tabName));
+        updateNavButtonState(btnLaporan, "\uD83D\uDCCA", "Laporan", "LAPORAN".equals(tabName));
         if ("KELOLA_DATA".equals(tabName)) {
             if (kelolaPanel != null) {
                 kelolaPanel.switchSubTab(true);
