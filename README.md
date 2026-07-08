@@ -16,7 +16,7 @@ Sistem Informasi Manajemen Inventaris Barang ini dirancang untuk mengelola dan m
 
 ## Cara Menjalankan Project di Lokal
 
-Jika kamu ingin menjalankan aplikasi ini di komputer lokalmu, ikuti langkah-langkah berikut:
+Jika kamu ingin menjalankan aplikasi ini di komputer lokalmu, kamu bisa download file .exe atau .jar pada bagian releases atau ikuti langkah-langkah berikut:
 
 ### 1. Kloning Repositori
 Buka terminal/command prompt dan jalankan perintah berikut:
@@ -41,12 +41,11 @@ Karena proyek ini sekarang telah menggunakan **Maven** untuk manajemen dependens
 4. Tunggu beberapa detik hingga proses *sync* selesai. IntelliJ akan mengunduh MySQL Connector, FlatLaf, dan OpenPDF secara otomatis.
 
 ### 4. Jalankan Aplikasi
-1. Download App pada bagian releases atau clone project ini
-2. Cari kelas utama `MainApplication.java` yang berada di dalam modul `app-launcher`.
-3. Eksekusi program sesuai dengan IDE yang Anda gunakan:
+1. Cari kelas utama `MainApplication.java` yang berada di dalam modul `app-launcher`.
+2. Eksekusi program sesuai dengan IDE yang Anda gunakan:
    * **IntelliJ IDEA / Eclipse:** Klik tombol **Run** (ikon segitiga hijau) di *toolbar* atas atau tepat di sebelah nomor baris kode.
    * **VS Code (Visual Studio Code):** Pastikan ekstensi *Java* sudah terpasang, lalu klik teks kecil **Run** yang muncul persis di atas kode `public static void main`, atau klik tombol *Play* di pojok kanan atas editor.
-4. Aplikasi akan berjalan di environment lokal Anda.
+3. Aplikasi akan berjalan di environment lokal Anda.
 
 
 ## Alur Kontribusi (Git Workflow)
